@@ -5,9 +5,9 @@ import smallDogImage from "../srcImages/dog-6289929_960_720.jpg";
 
 export default function Home() {
   return (
-    <main className="md:h-[88vh] flex flex-col items-center mt-2">
+    <main className="md:h-[88vh] flex flex-col items-center">
       <div className="flex justify-center w-full h-full px-3 lg:pb-0 pb-3">
-        <div className="mt-[10vh] px-3 flex flex-col items-start justify-center absolute  w-[50%] text-[#038900]">
+        <div className="z-2 mt-[10vh] px-3 flex flex-col items-start justify-center absolute  w-[50%] text-[#038900]">
           <h1 className="text-[64px] lg:text-[72px] font-bold w-[50%] lg:w-full">
             Find Your
           </h1>
@@ -28,7 +28,15 @@ export default function Home() {
         <Image
           src={dogImage}
           alt=""
-          className="z-1 object-center w-full h-full rounded-md"
+          className="object-center w-full h-full rounded-md invisible md:visible"
+        ></Image>
+        <Image
+          src={smallDogImage}
+          alt=""
+          className="absolute w-[100vw] h-[100vh] object-center md:hidden"
+          style={{
+            zIndex: -1,
+          }}
         ></Image>
       </div>
     </main>
