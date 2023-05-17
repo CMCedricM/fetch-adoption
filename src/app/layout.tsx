@@ -16,8 +16,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex flex-col bg-[#E0E1BC] w-full h-full">
-        <MyHeader></MyHeader>
+      <body className="min-h-screen flex flex-col bg-[#E0E1BC] gap-2 ">
+        <div>
+          <MyHeader></MyHeader>
+        </div>
         <div>{children}</div>
       </body>
     </html>
