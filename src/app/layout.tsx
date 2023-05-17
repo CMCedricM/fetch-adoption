@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col bg-[#E0E1BC] gap-2 ">
+      <body className="min-h-screen flex flex-col bg-[#E0E1BC] md:gap-3 ">
         <div>
           <MyHeader></MyHeader>
         </div>
