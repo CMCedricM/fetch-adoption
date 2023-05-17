@@ -2,14 +2,17 @@
 import FetchModal from "./modals/FetchModal";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import useAuth from "./functions/endpoints";
 
 type LoginModalProps = {
   openState: [boolean, Dispatch<SetStateAction<boolean>>];
+  userNameHandler?: [string, Dispatch<SetStateAction<string>>];
 };
 
-const LoginModal = ({ openState }: LoginModalProps) => {
+const LoginModal = ({ openState, userNameHandler }: LoginModalProps) => {
   const [openLogin, setOpenLogin] = openState;
   const [errorMsg, setErrorMsg] = useState("");
+  const [userHandler, setUserHanlder] = userNameHandler || [null, null];
 
   type LoginForm = {
     userName: string;
@@ -24,18 +27,31 @@ const LoginModal = ({ openState }: LoginModalProps) => {
     formState: { errors },
   } = useForm<LoginForm>();
 
+  const { login, testConnection, isLoggedIn, userName } = useAuth();
+
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
     const userName = data.userName;
     if (userName.trim() == "") {
       setErrorMsg("Your Name is Required");
     }
     const emailAddress = data.email;
+    try {
+      login(userName, emailAddress);
+    } catch (err) {
+      console.log("no");
+    }
   };
 
   useEffect(() => {
     clearErrors();
   }, [openLogin, clearErrors]);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      setOpenLogin(false);
+      setUserHanlder ? setUserHanlder(userName) : "";
+    }
+  }, [isLoggedIn, setOpenLogin, userName, setUserHanlder]);
   return (
     <FetchModal
       openState={[openLogin, setOpenLogin]}
@@ -79,6 +95,18 @@ const LoginModal = ({ openState }: LoginModalProps) => {
             </button>
           </div>
         </form>
+        <button
+          className="p-2 bg-white rounded-md"
+          onClick={async () => {
+            try {
+              await testConnection();
+            } catch (err) {
+              console.log((err as Error).message);
+            }
+          }}
+        >
+          Test Endpoint
+        </button>
       </div>
     </FetchModal>
   );
