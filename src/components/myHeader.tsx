@@ -4,8 +4,8 @@ const MyHeader = () => {
       <div className="grow text-[48px] text-[#2f922e] font-Rubik font-semibold">
         <h1>Fetch</h1>
       </div>
-      <div className="bg-[#4d854c] px-8 py-2 rounded-md opacity-70 hover:opacity-95">
-        <h1 className="text-lg font-Rubik font-semibold">Login</h1>
+      <div className="px-8 py-2 rounded-md bg-[#2f922e]/70 hover:bg-[#2f922e]/90">
+        <h1 className="text-lg text-black font-Rubik font-semibold">Login</h1>
       </div>
     </div>
   );
