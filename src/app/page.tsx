@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="md:h-[88vh] flex flex-col items-center">
-      <div className="flex justify-center w-full h-full px-3 lg:pb-2 p-3">
+      <div className="flex justify-center w-full h-full px-3 lg:pb-2 md:p-3">
         <div
           className="z-2 h-[50%] mt-[12vh] ml-[4vw] md:mt-[15vh] md:ml-[11vh] px-3 flex flex-col gap-2 items-start md:items-center
         justify-center absolute w-[50%] text-[#00ff15] md:text-[#40e024] text-center"
