@@ -2,6 +2,7 @@ import Image from "next/image";
 import dogImage from "../srcImages/golden-retriever.jpg";
 import largerDogImage from "../srcImages/dog-image-1.jpg";
 import smallDogImage from "../srcImages/dog-6289929_960_720.jpg";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
                 className=" w-[80%] lg:w-[25%] backdrop-blur-md  bg-[#40e024]/80 pt-4 pb-3 px-2
               rounded-xl text-black text-lg font-bold font-Rubik  hover:bg-[#40e024]/60 drop-shadow-lg"
               >
-                {`Let's Play Fetch!`}
+                <Link href="/home">{`Let's Play Fetch!`}</Link>
               </button>
             </div>
           </div>
