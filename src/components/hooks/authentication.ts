@@ -14,7 +14,7 @@ export type Dog = {
 const useAuth = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
-  const axiosInstance = axios.create({
+  const authConnection = axios.create({
     baseURL: "https://frontend-take-home-service.fetch.com",
     withCredentials: true,
   });
@@ -22,7 +22,7 @@ const useAuth = () => {
   const login = async (user: string, email: string) => {
     let res;
     try {
-      res = await axiosInstance.post("/auth/login", {
+      res = await authConnection.post("/auth/login", {
         name: user,
         email: email,
       });
@@ -48,7 +48,7 @@ const useAuth = () => {
   };
 
   const testConnection = async () => {
-    const res = await axiosInstance.get("/dogs/breeds").catch((err) => {
+    const res = await authConnection.get("/dogs/breeds").catch((err) => {
       throw new Error(`There was an error => ${(err as Error).message}`);
     });
 
@@ -58,7 +58,7 @@ const useAuth = () => {
   };
 
   const signOut = async () => {
-    const res = await axiosInstance.post("/auth/logout").catch((err) => {
+    const res = await authConnection.post("/auth/logout").catch((err) => {
       localStorage.removeItem("user_info");
       throw new Error(
         `There was an error logging out ${(err as Error).message}`
@@ -74,6 +74,7 @@ const useAuth = () => {
     isLoggedIn,
     userName,
     signOut,
+    authConnection,
   };
 };
 

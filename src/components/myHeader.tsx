@@ -1,7 +1,7 @@
 "use client";
-import LoginModal from "./loginModal";
+import LoginModal from "./modals/loginModal";
 import { useEffect, useState } from "react";
-import useAuth from "./functions/endpoints";
+import useAuth from "./hooks/authentication";
 import Link from "next/link";
 const MyHeader = () => {
   const [openLogin, setOpenLogin] = useState(false);

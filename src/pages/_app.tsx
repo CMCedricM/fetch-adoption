@@ -7,9 +7,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <div className="min-h-screen flex flex-col bg-[#E0E1BC] md:gap-3">
       <div>
-        <MyHeader/>
+        <MyHeader />
       </div>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </div>
   );
 };

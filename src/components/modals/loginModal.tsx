@@ -1,8 +1,8 @@
 "use client";
-import FetchModal from "./modals/FetchModal";
+import FetchModal from "./FetchModal";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import useAuth from "./functions/endpoints";
+import useAuth from "../hooks/authentication";
 
 type LoginModalProps = {
   openState: [boolean, Dispatch<SetStateAction<boolean>>];
