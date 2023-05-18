@@ -44,6 +44,7 @@ const LoginModal = ({ openState, userNameHandler }: LoginModalProps) => {
 
   useEffect(() => {
     clearErrors();
+    reset();
   }, [openLogin, clearErrors]);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const LoginModal = ({ openState, userNameHandler }: LoginModalProps) => {
     >
       <div className="flex flex-col gap-2 font-Rubik w-full items-center pb-2">
         <h1 className="font-bold text-3xl text-center">Login</h1>
-        <form className="w-full" onSubmit={handleSubmit(onSubmit, console.log)}>
+        <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
           <div className=" w-full flex flex-col px-2 pb-5 gap-3">
             <p className="font-medium text-lg">Your Name:</p>
             <input

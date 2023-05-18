@@ -2,10 +2,11 @@
 import LoginModal from "./loginModal";
 import { useEffect, useState } from "react";
 import useAuth from "./functions/endpoints";
+import Link from "next/link";
 const MyHeader = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [user, setUser] = useState("");
-  const { signOut } = useAuth();
+  const { signOut, testConnection } = useAuth();
 
   useEffect(() => {
     const userNameLocal = localStorage.getItem("user_info");
@@ -24,7 +25,9 @@ const MyHeader = () => {
         userNameHandler={[user, setUser]}
       ></LoginModal>
       <div className="grow text-[48px] text-[#2f922e] font-Rubik font-semibold">
-        <h1>Fetch</h1>
+        <h1>
+          <Link href="/">Fetch</Link>
+        </h1>
       </div>
 
       {!user && (
@@ -51,6 +54,16 @@ const MyHeader = () => {
           {`Hello, ${user}`}
         </div>
       )}
+      <button
+        className="flex p-3 ml-3 bg-white rounded-md"
+        onClick={async () =>
+          await testConnection().catch((err) =>
+            console.log((err as Error).message)
+          )
+        }
+      >
+        test endpoint
+      </button>
     </div>
   );
 };
