@@ -1,11 +1,12 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { SetStateAction, Dispatch, useState } from "react";
 
 type ZipEntry = {
   zipCode: number;
 };
 
 type filterSideProps = {
+  filterSetting: [string, Dispatch<SetStateAction<string>>];
   className?: string;
   height?: string;
   width?: string;

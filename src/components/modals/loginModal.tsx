@@ -1,5 +1,5 @@
 "use client";
-import FetchModal from "./FetchModal";
+import FetchModal from "./fetchModal";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import useAuth from "../hooks/authentication";
@@ -56,7 +56,7 @@ const LoginModal = ({ openState, userNameHandler }: LoginModalProps) => {
   return (
     <FetchModal
       openState={[openLogin, setOpenLogin]}
-      colorScheme="bg-[#E0E1BC]"
+      colorScheme="bg-[#659B78]"
       extraOnClose={() => clearErrors()}
     >
       <div className="flex flex-col gap-2 font-Rubik w-full items-center pb-2">
@@ -90,7 +90,7 @@ const LoginModal = ({ openState, userNameHandler }: LoginModalProps) => {
           <div className="flex flex-col items-center">
             <button
               type="submit"
-              className="items-center bg-[#2f922e]/70 w-[20%] rounded-md p-2 font-semibold"
+              className="items-center bg-niceWhite w-[20%] rounded-md p-2 font-semibold"
             >
               Login
             </button>
