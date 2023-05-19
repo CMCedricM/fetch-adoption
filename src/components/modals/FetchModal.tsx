@@ -44,10 +44,7 @@ const FetchModal = ({
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
         >
-          <div
-            className="fixed inset-0 rounded-md bg-[#000000]/50"
-            aria-hidden="true"
-          >
+          <div className="fixed inset-0 bg-[#000000]/50" aria-hidden="true">
             <div className="fixed inset-0 overflow-y-auto">
               <div className="flex min-h-full items-center justify-center p-4 text-center">
                 <Dialog.Panel

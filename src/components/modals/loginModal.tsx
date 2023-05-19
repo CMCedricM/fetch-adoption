@@ -8,6 +8,7 @@ type LoginModalProps = {
   userNameHandler?: [string, Dispatch<SetStateAction<string>>];
   title?: string;
   preventClosing?: boolean;
+  reload?: [boolean, Dispatch<SetStateAction<boolean>>];
 };
 
 const LoginModal = ({
@@ -15,10 +16,12 @@ const LoginModal = ({
   userNameHandler,
   title,
   preventClosing,
+  reload,
 }: LoginModalProps) => {
   const [openLogin, setOpenLogin] = openState;
   const [errorMsg, setErrorMsg] = useState("");
   const [userHandler, setUserHanlder] = userNameHandler || [null, null];
+  const [reloadSet, setReload] = reload || [null, null];
 
   type LoginForm = {
     userName: string;
@@ -57,6 +60,7 @@ const LoginModal = ({
     if (isLoggedIn) {
       setOpenLogin(false);
       setUserHanlder ? setUserHanlder(userName) : "";
+      setReload ? setReload(true) : "";
     }
   }, [isLoggedIn, setOpenLogin, userName, setUserHanlder]);
   return (

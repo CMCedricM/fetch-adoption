@@ -3,11 +3,12 @@ import LoginModal from "./modals/loginModal";
 import { useEffect, useState } from "react";
 import useAuth from "./hooks/authentication";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 const MyHeader = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [user, setUser] = useState("");
   const { signOut, testConnection } = useAuth();
-
+  const router = useRouter();
   useEffect(() => {
     const userNameLocal = localStorage.getItem("user_info");
     if (userNameLocal) {
@@ -44,6 +45,7 @@ const MyHeader = () => {
           onClick={async () => {
             try {
               await signOut();
+              router.refresh();
             } catch (err) {
               console.log((err as Error).message);
             }
