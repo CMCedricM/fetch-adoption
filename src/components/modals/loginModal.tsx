@@ -85,7 +85,7 @@ const LoginModal = ({
               })}
             ></input>
             {errors.userName && (
-              <div className="text-red-400 pl-1">{`You Must Enter Your Name`}</div>
+              <div className="text-red pl-1">{`You Must Enter Your Name`}</div>
             )}
             <p className="font-medium text-lg">Your Email:</p>
             <input
@@ -97,7 +97,7 @@ const LoginModal = ({
               })}
             ></input>
             {errors.email && (
-              <div className="text-red-400 pl-1">{`Invalid Email`}</div>
+              <div className="text-red pl-1">{`Invalid Email`}</div>
             )}
           </div>
           <div className="flex flex-col items-center">
