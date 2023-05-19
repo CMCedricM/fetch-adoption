@@ -14,6 +14,7 @@ type FetchModalProps = {
   dialogTitle?: String;
   extraOnClose?: () => void;
   colorScheme?: string;
+  preventClosing?: boolean;
 };
 
 const FetchModal = ({
@@ -22,6 +23,7 @@ const FetchModal = ({
   dialogTitle,
   extraOnClose,
   colorScheme,
+  preventClosing,
 }: FetchModalProps) => {
   const [open, setOpen] = openState;
   return (
@@ -53,11 +55,15 @@ const FetchModal = ({
                     colorScheme ? colorScheme : "bg-white"
                   }  p-2 text-left align-middle shadow-xl transition-all`}
                 >
-                  <div className="pb-2">
-                    <button onClick={() => setOpen(false)}>
-                      <XMarkIcon width={20} height={20}></XMarkIcon>
-                    </button>
-                  </div>
+                  {!preventClosing ? (
+                    <div className="pb-2">
+                      <button onClick={() => setOpen(false)}>
+                        <XMarkIcon width={20} height={20}></XMarkIcon>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="p-2"></div>
+                  )}
                   {dialogTitle && (
                     <Dialog.Title
                       as="h3"

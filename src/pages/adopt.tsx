@@ -17,6 +17,7 @@ const AdoptionPage = () => {
       <LoginModal
         openState={[showLoginModal, setShowLoginModal]}
         title="Login To Continue"
+        preventClosing={true}
       ></LoginModal>
       <div section-label={"adoption-area"} className="flex flex-row">
         <FilterSideBar

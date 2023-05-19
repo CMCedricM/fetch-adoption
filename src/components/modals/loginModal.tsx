@@ -7,9 +7,15 @@ type LoginModalProps = {
   openState: [boolean, Dispatch<SetStateAction<boolean>>];
   userNameHandler?: [string, Dispatch<SetStateAction<string>>];
   title?: string;
+  preventClosing?: boolean;
 };
 
-const LoginModal = ({ openState, userNameHandler, title }: LoginModalProps) => {
+const LoginModal = ({
+  openState,
+  userNameHandler,
+  title,
+  preventClosing,
+}: LoginModalProps) => {
   const [openLogin, setOpenLogin] = openState;
   const [errorMsg, setErrorMsg] = useState("");
   const [userHandler, setUserHanlder] = userNameHandler || [null, null];
@@ -58,6 +64,7 @@ const LoginModal = ({ openState, userNameHandler, title }: LoginModalProps) => {
       openState={[openLogin, setOpenLogin]}
       colorScheme="bg-[#E0E1BC]"
       extraOnClose={() => clearErrors()}
+      preventClosing={preventClosing}
     >
       <div className="flex flex-col gap-2 font-Rubik w-full items-center pb-2">
         <h1 className="font-bold text-3xl text-center">{`${
