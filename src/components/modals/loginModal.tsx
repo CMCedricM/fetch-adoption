@@ -1,5 +1,4 @@
-"use client";
-import FetchModal from "./fetchModal";
+import FetchModal from "./FetchModal";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import useAuth from "../hooks/authentication";
@@ -7,9 +6,10 @@ import useAuth from "../hooks/authentication";
 type LoginModalProps = {
   openState: [boolean, Dispatch<SetStateAction<boolean>>];
   userNameHandler?: [string, Dispatch<SetStateAction<string>>];
+  title?: string;
 };
 
-const LoginModal = ({ openState, userNameHandler }: LoginModalProps) => {
+const LoginModal = ({ openState, userNameHandler, title }: LoginModalProps) => {
   const [openLogin, setOpenLogin] = openState;
   const [errorMsg, setErrorMsg] = useState("");
   const [userHandler, setUserHanlder] = userNameHandler || [null, null];
@@ -56,11 +56,13 @@ const LoginModal = ({ openState, userNameHandler }: LoginModalProps) => {
   return (
     <FetchModal
       openState={[openLogin, setOpenLogin]}
-      colorScheme="bg-[#659B78]"
+      colorScheme="bg-[#E0E1BC]"
       extraOnClose={() => clearErrors()}
     >
       <div className="flex flex-col gap-2 font-Rubik w-full items-center pb-2">
-        <h1 className="font-bold text-3xl text-center">Login</h1>
+        <h1 className="font-bold text-3xl text-center">{`${
+          title ? title : "Login"
+        }`}</h1>
         <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
           <div className=" w-full flex flex-col px-2 pb-5 gap-3">
             <p className="font-medium text-lg">Your Name:</p>
@@ -90,7 +92,7 @@ const LoginModal = ({ openState, userNameHandler }: LoginModalProps) => {
           <div className="flex flex-col items-center">
             <button
               type="submit"
-              className="items-center bg-niceWhite w-[20%] rounded-md p-2 font-semibold"
+              className="items-center  bg-[#2f922e]/70 w-[20%] rounded-md p-2 font-semibold"
             >
               Login
             </button>

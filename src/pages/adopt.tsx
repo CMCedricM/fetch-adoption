@@ -1,11 +1,23 @@
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import FilterSideBar from "@/components/dashboard/filterSideBar";
+import LoginModal from "@/components/modals/loginModal";
 
 const AdoptionPage = () => {
   const [filterBy, setFilterBy] = useState<string>("");
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user_info");
+    !user ? setShowLoginModal(true) : "";
+  }, []);
+
   return (
     <div className="flex flex-col w-full h-full">
+      <LoginModal
+        openState={[showLoginModal, setShowLoginModal]}
+        title="Login To Continue"
+      ></LoginModal>
       <div section-label={"adoption-area"} className="flex flex-row">
         <FilterSideBar
           filterSetting={[filterBy, setFilterBy]}

@@ -43,7 +43,7 @@ const FetchModal = ({
           leaveTo="opacity-0 scale-95"
         >
           <div
-            className="fixed inset-0 rounded-md bg-black/30"
+            className="fixed inset-0 rounded-md bg-[#000000]/50"
             aria-hidden="true"
           >
             <div className="fixed inset-0 overflow-y-auto">
