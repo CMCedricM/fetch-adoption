@@ -7,15 +7,13 @@ import { useRouter } from "next/navigation";
 const MyHeader = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [user, setUser] = useState("");
-  const { signOut, testConnection } = useAuth();
+  const { signOut, checkConnection } = useAuth();
   const router = useRouter();
   useEffect(() => {
     const userNameLocal = localStorage.getItem("user_info");
     if (userNameLocal) {
       setUser(userNameLocal);
       setOpenLogin(false);
-      console.log("here");
-      console.log(userNameLocal);
     }
   }, []);
 
@@ -59,7 +57,7 @@ const MyHeader = () => {
       <button
         className="flex p-3 ml-3 bg-white rounded-md"
         onClick={async () =>
-          await testConnection().catch((err) =>
+          await checkConnection().catch((err) =>
             console.log((err as Error).message)
           )
         }

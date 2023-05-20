@@ -36,7 +36,7 @@ const LoginModal = ({
     formState: { errors },
   } = useForm<LoginForm>();
 
-  const { login, testConnection, isLoggedIn, userName } = useAuth();
+  const { login, checkConnection, isLoggedIn, userName } = useAuth();
 
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
     const userName = data.userName;
@@ -47,7 +47,7 @@ const LoginModal = ({
     try {
       login(userName, emailAddress);
     } catch (err) {
-      console.log("no");
+      console.log(`There was an error ${err}`);
     }
   };
 
@@ -113,7 +113,7 @@ const LoginModal = ({
           className="p-2 bg-white rounded-md"
           onClick={async () => {
             try {
-              await testConnection();
+              await checkConnection();
             } catch (err) {
               console.log((err as Error).message);
             }
