@@ -1,5 +1,6 @@
 import { AxiosInstance } from "axios";
 import { useState } from "react";
+import { DogAdoptions } from "../dashboard/adoptionSection";
 
 type DogDataInfo = {
   auth: AxiosInstance;
@@ -42,17 +43,26 @@ export const useDogData = ({ auth }: DogDataInfo) => {
 
   const getDogData = async (dogIds: Array<string>) => {
     const res = await auth.post("/dogs", dogIds).catch((err) => {
-      throw new Error((err as Error).message);
+      throw new Error(err.message);
     });
     const { data } = res;
     return data;
   };
 
-  const findDogs = async (searchParam: DogDataInfo) => {};
+  const findDogs = async (searchParam: DogSearch) => {
+    const res = await auth
+      .get("/dogs/search", { params: searchParam })
+      .catch((err) => {
+        throw new Error(`There was an error ${err.message}`);
+      });
+
+    return res;
+  };
 
   return {
     getBreeds,
     getDogs,
+    findDogs,
     getDogData,
   };
 };
