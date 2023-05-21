@@ -51,9 +51,11 @@ const AdoptionPage = () => {
   // Once Auth is Checked, query breeds and dogs
   useEffect(() => {
     if (isConnected) {
-      getBreeds().then((data) => {
-        setBreedData(data.sort());
-      });
+      getBreeds()
+        .then((data) => {
+          setBreedData(data.sort());
+        })
+        .catch((err) => console.log(err));
     }
   }, [isConnected]);
 
