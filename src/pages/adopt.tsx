@@ -6,56 +6,57 @@ import { useRouter } from "next/navigation";
 import { authConnection } from "@/components/hooks/authentication";
 import useAuth from "@/components/hooks/authentication";
 import { useDogData } from "@/components/hooks/DogData";
+import { DogAdoptions } from "@/components/dashboard/adoptionSection";
 
 const AdoptionPage = () => {
-  const [filterBy, setFilterBy] = useState<string>("");
+  // Main states
+  const [isConnected, setIsConnected] = useState<boolean>(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [reload, setReload] = useState(false);
 
-  const { checkConnection, isLoggedIn } = useAuth();
-  const { getBreeds, breeds } = useDogData({ auth: authConnection });
-
+  const { checkConnection } = useAuth();
+  const { getBreeds } = useDogData({ auth: authConnection });
+  // Dog Data States
   const [breedData, setBreedData] = useState<Array<string>>([]);
 
-  // Do this on page startup
-  useEffect(() => {
-    const user = localStorage.getItem("user_info");
-    try {
-      if (!checkConnection || !user) {
-        setBreedData([]);
-        setShowLoginModal(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+  // Filtering
+  const [filterBy, setFilterBy] = useState<string>("");
 
-  // This should be done once the user is logged in
-  useEffect(() => {
-    if (isLoggedIn) {
-      getBreeds().catch((err) => {
-        console.log(`There was an error ${err}`);
-      });
-    } else {
-      setBreedData([]);
-    }
-  }, [isLoggedIn]);
-
-  // Once the user has logged in and the breeds have been fetched we will need to save the breeds
-  useEffect(() => {
-    if (breeds) {
-      setBreedData(breeds);
-    }
-    console.log(breeds);
-  }, [breeds]);
   const router = useRouter();
 
+  // On page load, check if the user is logged in
+  useEffect(() => {
+    checkConnection()
+      .then((val) => {
+        const user = localStorage.getItem("user_info");
+        if (user) {
+          setIsConnected(true);
+        } else {
+          setShowLoginModal(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  // Trigger reload if user logged in
   useEffect(() => {
     if (reload) {
       router.refresh();
       setReload(false);
     }
   }, [reload, router]);
+
+  // Once Auth is Checked, query breeds and dogs
+  useEffect(() => {
+    if (isConnected) {
+      getBreeds().then((data) => {
+        setBreedData(data);
+        console.log(data);
+      });
+    }
+  }, [isConnected]);
 
   return (
     <div className="flex flex-col w-full h-full">
@@ -71,6 +72,7 @@ const AdoptionPage = () => {
           className="w-[10%] h-[80vh] bg-[#659B78] ml-2 rounded-md font-Rubik"
           breedsData={[breedData, setBreedData]}
         />
+        {isConnected && <DogAdoptions></DogAdoptions>}
       </div>
       <div section-label={"button-area"}></div>
     </div>

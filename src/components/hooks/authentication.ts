@@ -3,14 +3,6 @@ import { useState, useEffect } from "react";
 import { UUID, randomUUID } from "crypto";
 import { error } from "console";
 
-export type Dog = {
-  id: string;
-  img: string;
-  name: string;
-  age: number;
-  zip_code: string;
-  breed: string;
-};
 
 export const authConnection = axios.create({
   baseURL: "https://frontend-take-home-service.fetch.com",
@@ -61,6 +53,7 @@ const useAuth = () => {
       return false;
     } else if (status == 200) {
       setLoggedIn(true);
+      console.log("here");
       return true;
     } else {
       throw new Error(`There was an error with status ${status}`);

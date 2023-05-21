@@ -1,5 +1,5 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { SetStateAction, Dispatch, useState } from "react";
+import { SetStateAction, Dispatch, useState, useEffect } from "react";
 
 type ZipEntry = {
   zipCode: number;
@@ -82,10 +82,11 @@ const FilterSideBar = ({
           <div className="bg-[#B9C9A1] text-center font-semibold font-Rubik py-1 ">
             Breed
           </div>
-          <div className="flex flex-col w-full h-[42vh] overflow-y-auto p-2">
+          <div className="flex flex-col w-full h-[20vh] overflow-y-auto p-2">
             {breedInfo &&
+              breedInfo.length > 0 &&
               breedInfo.map((val, idx) => {
-                return <div key={idx}>{val}</div>;
+                return <li key={idx}>{val}</li>;
               })}
           </div>
         </div>
