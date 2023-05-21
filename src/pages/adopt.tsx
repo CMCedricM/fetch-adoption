@@ -27,9 +27,9 @@ const AdoptionPage = () => {
   // On page load, check if the user is logged in
   useEffect(() => {
     checkConnection()
-      .then((val) => {
+      .then((loggedInStatus) => {
         const user = localStorage.getItem("user_info");
-        if (user) {
+        if (user && loggedInStatus) {
           setIsConnected(true);
         } else {
           setShowLoginModal(true);
@@ -52,8 +52,7 @@ const AdoptionPage = () => {
   useEffect(() => {
     if (isConnected) {
       getBreeds().then((data) => {
-        setBreedData(data);
-        console.log(data);
+        setBreedData(data.sort());
       });
     }
   }, [isConnected]);
