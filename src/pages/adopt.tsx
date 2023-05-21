@@ -75,7 +75,16 @@ const AdoptionPage = () => {
         />
         {isConnected && <DogAdoptions></DogAdoptions>}
       </div>
-      <div section-label={"button-area"}></div>
+      <div
+        section-label={"button-area"}
+        className="flex flex-row items-center mx-2 p-2"
+      >
+        <div className=" w-full flex flex-row items-center justify-center">
+          <button className="p-2 px-3 bg-[#2f922e] rounded-md">
+            Show More
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

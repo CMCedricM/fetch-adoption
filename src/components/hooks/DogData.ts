@@ -20,6 +20,15 @@ interface DogSearch {
   zipCodes?: Array<string>;
   ageMin?: Number;
   ageMax?: Number;
+  size: Number;
+  sort: string;
+}
+
+interface DogSearchRetTypes {
+  resultIds: string[];
+  total: number;
+  next: string;
+  prev: string;
 }
 
 export const useDogData = ({ auth }: DogDataInfo) => {
@@ -32,10 +41,16 @@ export const useDogData = ({ auth }: DogDataInfo) => {
     return data as string[];
   };
 
-  const getDogs = async () => {
-    const res = await auth.get("/dogs/search").catch((err) => {
-      throw new Error(`Unable to Fetch Dogs ==> ${(err as Error).message} `);
-    });
+  const getDogIds = async () => {
+    const res = await auth
+      .get("/dogs/search", {
+        params: {
+          size: 15,
+        },
+      })
+      .catch((err) => {
+        throw new Error(`Unable to Fetch Dogs ==> ${(err as Error).message} `);
+      });
 
     const { data } = res;
     return data;
@@ -46,22 +61,27 @@ export const useDogData = ({ auth }: DogDataInfo) => {
       throw new Error(err.message);
     });
     const { data } = res;
-    return data;
+    return data as Dog[];
   };
 
-  const findDogs = async (searchParam: DogSearch) => {
+  const findDogs = async (
+    searchParam: DogSearch,
+    nextPg?: string,
+    prevPg?: string
+  ) => {
     const res = await auth
       .get("/dogs/search", { params: searchParam })
       .catch((err) => {
         throw new Error(`There was an error ${err.message}`);
       });
 
-    return res;
+    const { data } = res;
+    return data as DogSearchRetTypes;
   };
 
   return {
     getBreeds,
-    getDogs,
+    getDogIds,
     findDogs,
     getDogData,
   };

@@ -9,7 +9,8 @@ module.exports = {
   theme: {
     colors : {
       'niceWhite' : '#fdfafa',
-      'red' : '#FF0000'
+      'red' : '#FF0000',
+      'black': '#000000'
     },
     extend: {
       backgroundImage: {
