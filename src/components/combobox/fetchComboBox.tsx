@@ -36,6 +36,10 @@ const FetchComboBox = ({
             className={`absolute mt-1 h-[20vh] w-[7vw] overflow-auto bg-niceWhite p-2 rounded-md cursor-default`}
             style={{ scrollbarWidth: "none" }}
           >
+            <Combobox.Option
+              value=""
+              className="hover:bg-[#89CFF0] w-full h-8 rounded-md px-2 py-1 overflow-clip"
+            ></Combobox.Option>
             {itemsList
               .filter((val) => val.toLowerCase().includes(query.toLowerCase()))
               .map((val, idx) => (
