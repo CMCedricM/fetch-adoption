@@ -77,7 +77,7 @@ const useAuth = () => {
     isLoggedIn,
     userName,
     signOut,
-    authConnection: authConnection,
+    authConnection,
   };
 };
 
