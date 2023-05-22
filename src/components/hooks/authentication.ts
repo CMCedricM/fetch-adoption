@@ -1,23 +1,20 @@
 import axios, { Axios, AxiosResponse } from "axios";
 import { useState, useEffect } from "react";
 import { UUID, randomUUID } from "crypto";
+import { error } from "console";
 
-export type Dog = {
-  id: string;
-  img: string;
-  name: string;
-  age: number;
-  zip_code: string;
-  breed: string;
-};
+axios.defaults.withCredentials = true;
+export const authConnection = axios.create({
+  baseURL: "https://frontend-take-home-service.fetch.com",
+  withCredentials: true,
+  validateStatus: (status) => {
+    return status < 500;
+  },
+});
 
 const useAuth = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
-  const authConnection = axios.create({
-    baseURL: "https://frontend-take-home-service.fetch.com",
-    withCredentials: true,
-  });
 
   const login = async (user: string, email: string) => {
     let res;
@@ -47,14 +44,20 @@ const useAuth = () => {
     localStorage.setItem("user_info", user);
   };
 
-  const testConnection = async () => {
+  const checkConnection = async () => {
     const res = await authConnection.get("/dogs/breeds").catch((err) => {
-      throw new Error(`There was an error => ${(err as Error).message}`);
+      throw new Error(`There was an error ===> ${err}`);
     });
-
-    const { data } = res;
-    console.log(data);
-    return data;
+    const { data, status } = res;
+    if (status == 401) {
+      return false;
+    } else if (status == 200) {
+      setLoggedIn(true);
+      console.log("here");
+      return true;
+    } else {
+      throw new Error(`There was an error with status ${status}`);
+    }
   };
 
   const signOut = async () => {
@@ -70,7 +73,7 @@ const useAuth = () => {
 
   return {
     login,
-    testConnection,
+    checkConnection,
     isLoggedIn,
     userName,
     signOut,
