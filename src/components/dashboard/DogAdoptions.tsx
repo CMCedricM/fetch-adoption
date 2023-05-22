@@ -4,17 +4,23 @@ import { type Dog } from "../hooks/DogData";
 import { useEffect, useState } from "react";
 import { DogImage } from "../modals/DogImages";
 import { SetStateAction, Dispatch } from "react";
+import { FilterOptionTypes } from "@/pages/adopt";
 
 type DogAdoptionProps = {
   showNextPage: [boolean, Dispatch<SetStateAction<boolean>>];
   showPreviousPage: [boolean, Dispatch<SetStateAction<boolean>>];
   setPageNumber: [number, Dispatch<SetStateAction<number>>];
+  filterOptions: [
+    FilterOptionTypes,
+    Dispatch<SetStateAction<FilterOptionTypes>>
+  ];
 };
 
 export const DogAdoptions = ({
   showNextPage,
   showPreviousPage,
   setPageNumber,
+  filterOptions,
 }: DogAdoptionProps) => {
   const { getDogIds, getDogData, getNextPagOfDogsIDs } = useDogData({
     auth: authConnection,
@@ -33,6 +39,9 @@ export const DogAdoptions = ({
   const [loadPreviousPage, setLoadPreviousPage] = showPreviousPage;
   const [prevPgPointer, setPreviousPagePointer] = useState<string>();
 
+  // Filter Controller
+  const [filterBy, setFilterBy] = filterOptions;
+
   //   We can assume we're authenticated here, so just get the Dogs
   useEffect(() => {
     getDogIds().then((data) => {
@@ -41,6 +50,15 @@ export const DogAdoptions = ({
     });
   }, []);
 
+  //   We can assume we're authenticated here, so just get the Dogs
+  useEffect(() => {
+    getDogIds(filterBy).then((data) => {
+      setPage(1);
+      setPreviousPagePointer("");
+      setNextPagePointer(data.next);
+      setDogIds(data.resultIds);
+    });
+  }, [filterBy]);
   // This is where we will call to get another page of dogs
   // TODO: Bad request because array is over the length of 100
   useEffect(() => {
@@ -48,14 +66,18 @@ export const DogAdoptions = ({
       (nextPgPointer || prevPgPointer) &&
       (loadNextPage || loadPreviousPage)
     ) {
-      getNextPagOfDogsIDs({
-        nextPg:
-          nextPgPointer && loadNextPage
-            ? nextPgPointer
-            : prevPgPointer && loadPreviousPage
-            ? prevPgPointer
-            : "",
-      })
+      console.log(filterBy);
+      getNextPagOfDogsIDs(
+        {
+          nextPg:
+            nextPgPointer && loadNextPage
+              ? nextPgPointer
+              : prevPgPointer && loadPreviousPage
+              ? prevPgPointer
+              : "",
+        },
+        filterBy
+      )
         .then((data) => {
           // Set our page pointers/URLS
           setPreviousPagePointer(data.prev);
@@ -115,6 +137,9 @@ export const DogAdoptions = ({
         });
     }
   }, [dogIds]);
+
+  // Handle Filtering
+  useEffect(() => {}, [filterBy]);
 
   // Create my array of thumbnail images
   const createImageThumbnails = (dogObj: Dog[]) => {

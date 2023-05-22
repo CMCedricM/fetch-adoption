@@ -8,6 +8,13 @@ import useAuth from "@/components/hooks/authentication";
 import { useDogData } from "@/components/hooks/DogData";
 import { DogAdoptions } from "@/components/dashboard/DogAdoptions";
 
+export enum FilterOptionTypes {
+  breedAZ = "breed:asc",
+  breedZA = "breed:desc",
+  ageAsc = "age:asc",
+  ageDsc = "age:desc",
+}
+
 const AdoptionPage = () => {
   // Main states
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -25,9 +32,14 @@ const AdoptionPage = () => {
   const [pageNumber, setPageNumber] = useState<number>(1);
 
   // Filtering
-  const [filterBy, setFilterBy] = useState<string>("");
+  const [filterBy, setFilterBy] = useState<FilterOptionTypes>(
+    FilterOptionTypes.breedAZ
+  );
 
   const router = useRouter();
+  useEffect(() => {
+    console.log("Filter was update");
+  }, [filterBy]);
 
   // On page load, check if the user is logged in
   useEffect(() => {
@@ -84,6 +96,7 @@ const AdoptionPage = () => {
             showNextPage={[getNextPage, setGetNextPage]}
             showPreviousPage={[getPreviousPage, setGetPreviousPage]}
             setPageNumber={[pageNumber, setPageNumber]}
+            filterOptions={[filterBy, setFilterBy]}
           ></DogAdoptions>
         )}
       </div>

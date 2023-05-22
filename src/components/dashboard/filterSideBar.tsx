@@ -1,13 +1,18 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { SetStateAction, Dispatch, useState, useEffect } from "react";
 import FetchComboBox from "../combobox/fetchComboBox";
+import { FilterOptionTypes } from "@/pages/adopt";
+import { useRouter } from "next/navigation";
 
 type ZipEntry = {
   zipCode: number;
 };
 
 type filterSideProps = {
-  filterSetting: [string, Dispatch<SetStateAction<string>>];
+  filterSetting: [
+    FilterOptionTypes,
+    Dispatch<SetStateAction<FilterOptionTypes>>
+  ];
   className?: string;
   height?: string;
   width?: string;
@@ -19,15 +24,33 @@ const FilterSideBar = ({
   height,
   width,
   breedsData,
+  filterSetting,
 }: filterSideProps) => {
-  const [alphaSelected, setAlphaSelected] = useState<string | null>(null);
+  const [alphaSelected, setAlphaSelected] = useState<string | boolean | null>(
+    null
+  );
+
+  const router = useRouter();
+  const [filterBy, setFilterBy] = filterSetting;
+
   const [breedInfo, setBreedInfo] = breedsData;
   const [breedSelected, setBreedSelected] = useState<string>("");
 
-  const filterAlphaOptions: Record<"label" | "value", string>[] = [
-    { label: "A - Z", value: "a_z" },
-    { label: "Z - A", value: "z_a" },
+  const filterAlphaOptions: Record<
+    "label" | "value" | "checkedByDefault",
+    string | boolean
+  >[] = [
+    { label: "A - Z", value: "a_z", checkedByDefault: true },
+    { label: "Z - A", value: "z_a", checkedByDefault: false },
   ];
+
+  useEffect(() => {
+    if (alphaSelected == "a_z") {
+      setFilterBy(FilterOptionTypes.breedAZ);
+    } else if (alphaSelected == "z_a") {
+      setFilterBy(FilterOptionTypes.breedZA);
+    }
+  }, [alphaSelected]);
 
   return (
     <div className={className ? className : ""}>
@@ -36,12 +59,15 @@ const FilterSideBar = ({
           Filter
         </h1>
         <div className="flex flex-col items-center w-full">
-          <div className="bg-[#B9C9A1] text-center w-full py-1 font-semibold invisible lg:visible rounded-md">
-            Alphabetical
-          </div>
-          <div className="bg-[#B9C9A1] text-center w-full py-1 font-semibold visible lg:hidden rounded-md">
-            Alpha
-          </div>
+          <span
+            title="Arrange by Breed"
+            className="bg-[#B9C9A1] text-center w-full py-1 font-semibold invisible lg:visible rounded-md cursor-default"
+          >
+            <div className="">Alphabetical</div>
+            <div className="bg-[#B9C9A1] text-center w-full py-1 font-semibold visible lg:hidden rounded-md">
+              Alpha
+            </div>
+          </span>
           <ul className="flex flex-col  items-center w-full pt-2">
             {filterAlphaOptions.map((val, idx) => {
               return (
@@ -57,9 +83,15 @@ const FilterSideBar = ({
                         ? setAlphaSelected(null)
                         : setAlphaSelected(val.value);
                     }}
-                    checked={alphaSelected === val.value}
+                    checked={
+                      alphaSelected && alphaSelected === val.value
+                        ? true
+                        : !alphaSelected && val.checkedByDefault
+                        ? true
+                        : false
+                    }
                   ></input>
-                  <p>{val.label}</p>
+                  <p title={`Arrange breed from ${val.label}`}>{val.label}</p>
                 </li>
               );
             })}
