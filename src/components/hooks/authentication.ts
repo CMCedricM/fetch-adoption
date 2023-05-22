@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { UUID, randomUUID } from "crypto";
 import { error } from "console";
 
-
 export const authConnection = axios.create({
   baseURL: "https://frontend-take-home-service.fetch.com",
   withCredentials: true,

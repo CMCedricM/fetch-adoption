@@ -18,6 +18,7 @@ const AdoptionPage = () => {
   const { getBreeds } = useDogData({ auth: authConnection });
   // Dog Data States
   const [breedData, setBreedData] = useState<Array<string>>([]);
+  const [getNextPage, setGetNextPage] = useState<boolean>(false);
 
   // Filtering
   const [filterBy, setFilterBy] = useState<string>("");
@@ -60,7 +61,7 @@ const AdoptionPage = () => {
   }, [isConnected]);
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full p-5">
       <LoginModal
         openState={[showLoginModal, setShowLoginModal]}
         title="Login To Continue"
@@ -70,20 +71,32 @@ const AdoptionPage = () => {
       <div section-label={"adoption-area"} className="flex flex-row">
         <FilterSideBar
           filterSetting={[filterBy, setFilterBy]}
-          className="w-[10%] h-[80vh] bg-[#659B78] ml-2 rounded-md font-Rubik"
+          className="w-[10%] h-[80vh] bg-[#659B78] ml-2 rounded-md font-Rubik sticky top-[11vh] p-2"
           breedsData={[breedData, setBreedData]}
         />
-        {isConnected && <DogAdoptions></DogAdoptions>}
+
+        {isConnected && (
+          <DogAdoptions
+            showNextPage={[getNextPage, setGetNextPage]}
+          ></DogAdoptions>
+        )}
       </div>
       <div
         section-label={"button-area"}
-        className="flex flex-row items-center mx-2 p-2"
+      className="flex flex-row items-center mx-2 p-2"
       >
-        <div className=" w-full flex flex-row items-center justify-center">
-          <button className="p-2 px-3 bg-[#2f922e] rounded-md">
-            Show More
-          </button>
-        </div>
+        {isConnected && (
+          <div className=" w-full flex flex-row items-center justify-center">
+            <button
+              className="p-2 px-3 bg-[#2f922e] rounded-md"
+              onClick={() => {
+                setGetNextPage(true);
+              }}
+            >
+              Show More
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

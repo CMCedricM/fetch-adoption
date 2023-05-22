@@ -2,22 +2,42 @@ import { useDogData } from "../hooks/DogData";
 import { authConnection } from "../hooks/authentication";
 import { type Dog } from "../hooks/DogData";
 import { useEffect, useState } from "react";
-import { DogImage } from "../modals/dogImages";
+import { DogImage } from "../modals/DogImages";
+import { SetStateAction, Dispatch } from "react";
 
-export const DogAdoptions = () => {
-  const { getDogIds, getDogData } = useDogData({ auth: authConnection });
-  const [dogIds, setDogIds] = useState<Array<string>>();
+type DogAdoptionProps = {
+  showNextPage: [boolean, Dispatch<SetStateAction<boolean>>];
+};
 
-  const [dogs, setDogs] = useState<Array<Dog>>();
-
+export const DogAdoptions = ({ showNextPage }: DogAdoptionProps) => {
+  const { getDogIds, getDogData, getNextPagOfDogsIDs } = useDogData({
+    auth: authConnection,
+  });
+  const [dogIds, setDogIds] = useState<string[]>();
   const [imageThumbnails, setImageThumbnails] = useState<JSX.Element[]>();
+
+  const [loadNextPage, setLoadNextPage] = showNextPage;
+  const [nextPgPointer, setNextPagePointer] = useState<string>();
 
   //   We can assume we're authenticated here, so just get the Dogs
   useEffect(() => {
     getDogIds().then((data) => {
+      setNextPagePointer(data.next);
       setDogIds(data.resultIds);
     });
   }, []);
+
+  // This is where we will call to get another page of dogs
+  useEffect(() => {
+    if (nextPgPointer && loadNextPage) {
+      getNextPagOfDogsIDs({ nextPg: nextPgPointer }).then((data) => {
+        setNextPagePointer(data.next);
+        const newData = [...(dogIds ?? []), data.resultIds];
+        if (dogIds) setDogIds(newData.flat());
+      });
+      setLoadNextPage(false);
+    }
+  }, [loadNextPage]);
 
   // Once we have retrieved all the dog ids, now we need to get their actual info
   useEffect(() => {
@@ -57,7 +77,7 @@ export const DogAdoptions = () => {
   };
 
   return (
-    <div className="grid grid-cols-5 gap-2 w-full h-full p-2 mx-2 border-2">
+    <div className="grid sm:grid-cols-1 md:grid-cols-5 gap-2 w-full h-full p-2 mx-2">
       {imageThumbnails}
     </div>
   );

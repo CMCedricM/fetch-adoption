@@ -18,7 +18,7 @@ const MyHeader = () => {
   }, []);
 
   return (
-    <div className="w-full flex  flex-row items-center justify-center px-10 py-2 border-b border-b-black">
+    <div className="w-full flex  flex-row items-center justify-center px-10 py-2 border-b border-b-black bg-[#E0E1BC]">
       <LoginModal
         openState={[openLogin, setOpenLogin]}
         userNameHandler={[user, setUser]}
@@ -54,7 +54,7 @@ const MyHeader = () => {
           {`Hello, ${user}`}
         </div>
       )}
-      <button
+      {/* <button
         className="flex p-3 ml-3 bg-white rounded-md"
         onClick={async () =>
           await checkConnection().catch((err) =>
@@ -63,7 +63,7 @@ const MyHeader = () => {
         }
       >
         test endpoint
-      </button>
+      </button> */}
     </div>
   );
 };

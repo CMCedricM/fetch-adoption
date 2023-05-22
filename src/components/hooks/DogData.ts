@@ -1,6 +1,7 @@
 import { AxiosInstance } from "axios";
 import { useState } from "react";
 import { DogAdoptions } from "../dashboard/adoptionSection";
+import next from "next/types";
 
 type DogDataInfo = {
   auth: AxiosInstance;
@@ -31,6 +32,11 @@ interface DogSearchRetTypes {
   prev: string;
 }
 
+interface DogSearchTypes {
+  nextPg?: string;
+  prevPg?: string;
+}
+
 export const useDogData = ({ auth }: DogDataInfo) => {
   const getBreeds = async () => {
     const breeds = await auth.get("/dogs/breeds").catch((err) => {
@@ -41,11 +47,12 @@ export const useDogData = ({ auth }: DogDataInfo) => {
     return data as string[];
   };
 
-  const getDogIds = async () => {
+  const getDogIds = async (filter?: string) => {
     const res = await auth
       .get("/dogs/search", {
         params: {
           size: 15,
+          sort: !filter ? "breed:asc" : filter,
         },
       })
       .catch((err) => {
@@ -53,7 +60,7 @@ export const useDogData = ({ auth }: DogDataInfo) => {
       });
 
     const { data } = res;
-    return data;
+    return data as DogSearchRetTypes;
   };
 
   const getDogData = async (dogIds: Array<string>) => {
@@ -64,11 +71,35 @@ export const useDogData = ({ auth }: DogDataInfo) => {
     return data as Dog[];
   };
 
-  const findDogs = async (
-    searchParam: DogSearch,
-    nextPg?: string,
-    prevPg?: string
+  const getNextPagOfDogsIDs = async (
+    { nextPg, prevPg }: DogSearchTypes,
+    filter?: string
   ) => {
+    let getPage: string = "";
+    if (prevPg) {
+      getPage = prevPg;
+    } else if (nextPg) {
+      getPage = nextPg;
+    } else {
+      throw new Error(`Error ==> No next or previous page pointer!`);
+    }
+    const res = await auth
+      .get(getPage, {
+        params: {
+          size: 15,
+        },
+      })
+      .catch((err) => {
+        throw new Error(`There was an error ==> ${err}`);
+      });
+
+    const { data } = res;
+    console.log("Data For Next Page");
+    console.log(data);
+    return data as DogSearchRetTypes;
+  };
+
+  const findDogs = async (searchParam: DogSearch) => {
     const res = await auth
       .get("/dogs/search", { params: searchParam })
       .catch((err) => {
@@ -82,6 +113,7 @@ export const useDogData = ({ auth }: DogDataInfo) => {
   return {
     getBreeds,
     getDogIds,
+    getNextPagOfDogsIDs,
     findDogs,
     getDogData,
   };

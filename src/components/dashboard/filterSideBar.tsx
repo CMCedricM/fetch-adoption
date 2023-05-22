@@ -1,5 +1,6 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { SetStateAction, Dispatch, useState, useEffect } from "react";
+import FetchComboBox from "../combobox/fetchComboBox";
 
 type ZipEntry = {
   zipCode: number;
@@ -21,6 +22,7 @@ const FilterSideBar = ({
 }: filterSideProps) => {
   const [alphaSelected, setAlphaSelected] = useState<string | null>(null);
   const [breedInfo, setBreedInfo] = breedsData;
+  const [breedSelected, setBreedSelected] = useState<string>("");
 
   const filterAlphaOptions: Record<"label" | "value", string>[] = [
     { label: "A - Z", value: "a_z" },
@@ -34,10 +36,10 @@ const FilterSideBar = ({
           Filter
         </h1>
         <div className="flex flex-col items-center w-full">
-          <div className="bg-[#B9C9A1] text-center w-full py-1 font-semibold invisible lg:visible">
+          <div className="bg-[#B9C9A1] text-center w-full py-1 font-semibold invisible lg:visible rounded-md">
             Alphabetical
           </div>
-          <div className="bg-[#B9C9A1] text-center w-full py-1 font-semibold visible lg:hidden">
+          <div className="bg-[#B9C9A1] text-center w-full py-1 font-semibold visible lg:hidden rounded-md">
             Alpha
           </div>
           <ul className="flex flex-col  items-center w-full pt-2">
@@ -64,7 +66,7 @@ const FilterSideBar = ({
           </ul>
         </div>
         <div className="flex flex-col items-center font-Rubik w-full py-2">
-          <div className="w-full bg-[#B9C9A1] text-center py-1 font-semibold">
+          <div className="w-full bg-[#B9C9A1] text-center py-1 font-semibold rounded-md">
             Zip Code
           </div>
           <form className="flex flex-col items-center mt-3 gap-2">
@@ -78,16 +80,16 @@ const FilterSideBar = ({
             </button>
           </form>
         </div>
-        <div className="flex flex-col w-full py-2">
-          <div className="bg-[#B9C9A1] text-center font-semibold font-Rubik py-1 ">
+        <div className="flex flex-col w-full py-2 gap-2">
+          <div className="bg-[#B9C9A1] text-center font-semibold font-Rubik py-1 rounded-md">
             Breed
           </div>
           <div className="flex flex-col w-full h-[20vh] overflow-y-auto p-2">
-            {breedInfo &&
-              breedInfo.length > 0 &&
-              breedInfo.map((val, idx) => {
-                return <li key={idx}>{val}</li>;
-              })}
+            <FetchComboBox
+              selectedItem={[breedSelected, setBreedSelected]}
+              itemsList={breedInfo}
+              className="text-center px-2"
+            />
           </div>
         </div>
       </div>

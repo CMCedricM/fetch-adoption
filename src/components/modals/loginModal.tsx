@@ -109,7 +109,7 @@ const LoginModal = ({
             </button>
           </div>
         </form>
-        <button
+        {/* <button
           className="p-2 bg-white rounded-md"
           onClick={async () => {
             try {
@@ -120,7 +120,7 @@ const LoginModal = ({
           }}
         >
           Test Endpoint
-        </button>
+        </button> */}
       </div>
     </FetchModal>
   );
