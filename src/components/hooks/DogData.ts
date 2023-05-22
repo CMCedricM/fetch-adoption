@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 import { useState } from "react";
-import { DogAdoptions } from "../dashboard/adoptionSection";
+import { DogAdoptions } from "../dashboard/DogAdoptions";
 import next from "next/types";
 
 type DogDataInfo = {
@@ -94,8 +94,8 @@ export const useDogData = ({ auth }: DogDataInfo) => {
       });
 
     const { data } = res;
-    console.log("Data For Next Page");
-    console.log(data);
+    // console.log("Data For Next Page");
+    // console.log(data);
     return data as DogSearchRetTypes;
   };
 

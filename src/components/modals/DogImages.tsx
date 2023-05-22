@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 
 interface DogImageProps extends Dog {
   selectImage: [string, Dispatch<SetStateAction<string>>];
+
   starred?: boolean;
 }
 
@@ -20,7 +21,7 @@ export const DogImage = ({
   selectImage,
   starred,
 }: DogImageProps) => {
-  const [selectedDogs, setSelectedDogs] = selectImage;
+  const [aSelectedDog, setASelectedDogs] = selectImage;
   const [isSelected, setIsSelected] = useState<boolean>(false);
 
   return (
@@ -42,11 +43,11 @@ export const DogImage = ({
         <div className="flex flex-col items-center  text-niceWhite rounded-md">
           <button
             onClick={() => {
-              setSelectedDogs(id);
+              setASelectedDogs(id);
               setIsSelected(!isSelected);
             }}
           >
-            {isSelected || starred ? (
+            {starred ? (
               <FilledInStar width={40} height={40} />
             ) : (
               <StarIcon width={40} height={40} className="p-2"></StarIcon>

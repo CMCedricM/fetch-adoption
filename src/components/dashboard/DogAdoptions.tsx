@@ -7,19 +7,31 @@ import { SetStateAction, Dispatch } from "react";
 
 type DogAdoptionProps = {
   showNextPage: [boolean, Dispatch<SetStateAction<boolean>>];
+  showPreviousPage: [boolean, Dispatch<SetStateAction<boolean>>];
+  setPageNumber: [number, Dispatch<SetStateAction<number>>];
 };
 
-export const DogAdoptions = ({ showNextPage }: DogAdoptionProps) => {
+export const DogAdoptions = ({
+  showNextPage,
+  showPreviousPage,
+  setPageNumber,
+}: DogAdoptionProps) => {
   const { getDogIds, getDogData, getNextPagOfDogsIDs } = useDogData({
     auth: authConnection,
   });
   const [dogIds, setDogIds] = useState<string[]>();
+  const [DogsInfoStorage, setDogInfo] = useState<Dog[]>();
   const [imageThumbnails, setImageThumbnails] = useState<JSX.Element[]>();
   const [selectedDogs, setSelectedDogs] = useState<Array<string>>([]);
   const [aSelect, setASelect] = useState<string>("");
 
+  // Page Controllers
+  const [page, setPage] = setPageNumber;
   const [loadNextPage, setLoadNextPage] = showNextPage;
   const [nextPgPointer, setNextPagePointer] = useState<string>();
+
+  const [loadPreviousPage, setLoadPreviousPage] = showPreviousPage;
+  const [prevPgPointer, setPreviousPagePointer] = useState<string>();
 
   //   We can assume we're authenticated here, so just get the Dogs
   useEffect(() => {
@@ -32,41 +44,63 @@ export const DogAdoptions = ({ showNextPage }: DogAdoptionProps) => {
   // This is where we will call to get another page of dogs
   // TODO: Bad request because array is over the length of 100
   useEffect(() => {
-    if (nextPgPointer && loadNextPage) {
-      getNextPagOfDogsIDs({ nextPg: nextPgPointer })
+    if (
+      (nextPgPointer || prevPgPointer) &&
+      (loadNextPage || loadPreviousPage)
+    ) {
+      getNextPagOfDogsIDs({
+        nextPg:
+          nextPgPointer && loadNextPage
+            ? nextPgPointer
+            : prevPgPointer && loadPreviousPage
+            ? prevPgPointer
+            : "",
+      })
         .then((data) => {
+          // Set our page pointers/URLS
+          setPreviousPagePointer(data.prev);
           setNextPagePointer(data.next);
+          // Map our new data
           const newData = [data.resultIds];
-          if (dogIds) setDogIds(newData.flat());
-          console.log("herehehreh");
-          console.log(newData.flat());
+          if (dogIds) {
+            setDogIds(newData.flat());
+            loadPreviousPage ? setPage(page - 1) : setPage(page + 1);
+          }
+
+          // console.log("herehehreh");
+          // console.log(newData.flat());
         })
         .catch((error) => {
           console.log(error);
         });
+      // Reset the state
       setLoadNextPage(false);
+      setLoadPreviousPage(false);
     }
-  }, [loadNextPage]);
-
-  useEffect(() => {
-    console.log("changed");
-    console.log(selectedDogs);
-  }, [selectedDogs]);
+  }, [loadNextPage, loadPreviousPage]);
 
   useEffect(() => {
     if (aSelect && selectedDogs.indexOf(aSelect) == -1) {
       console.log("apended");
       setSelectedDogs([...selectedDogs, aSelect]);
     } else if (aSelect && selectedDogs.indexOf(aSelect) != -1) {
-      const temp = selectedDogs.filter((val) => {
-        val != aSelect;
+      console.log(aSelect);
+      const temp: string[] = [];
+      selectedDogs.forEach((val, idx) => {
+        if (val != aSelect) {
+          temp.push(val);
+        }
       });
-      console.log("removed");
       setSelectedDogs(temp);
     }
-
     setASelect("");
   }, [aSelect]);
+
+  useEffect(() => {
+    if (DogsInfoStorage) {
+      createImageThumbnails(DogsInfoStorage);
+    }
+  }, [selectedDogs]);
 
   // Once we have retrieved all the dog ids, now we need to get their actual info
   useEffect(() => {
@@ -74,6 +108,7 @@ export const DogAdoptions = ({ showNextPage }: DogAdoptionProps) => {
       getDogData(dogIds)
         .then((data) => {
           createImageThumbnails(data);
+          setDogInfo(data);
         })
         .catch((err) => {
           console.log(`There was an error ${err}`);
@@ -83,7 +118,6 @@ export const DogAdoptions = ({ showNextPage }: DogAdoptionProps) => {
 
   // Create my array of thumbnail images
   const createImageThumbnails = (dogObj: Dog[]) => {
-    console.log(dogObj);
     const ImageThumbArr = dogObj.map((val, idx) => {
       return (
         <div
@@ -103,7 +137,6 @@ export const DogAdoptions = ({ showNextPage }: DogAdoptionProps) => {
         </div>
       );
     });
-    console.log(ImageThumbArr);
     setImageThumbnails(ImageThumbArr);
   };
 

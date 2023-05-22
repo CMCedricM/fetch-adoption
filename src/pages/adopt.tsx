@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { authConnection } from "@/components/hooks/authentication";
 import useAuth from "@/components/hooks/authentication";
 import { useDogData } from "@/components/hooks/DogData";
-import { DogAdoptions } from "@/components/dashboard/adoptionSection";
+import { DogAdoptions } from "@/components/dashboard/DogAdoptions";
 
 const AdoptionPage = () => {
   // Main states
@@ -18,7 +18,11 @@ const AdoptionPage = () => {
   const { getBreeds } = useDogData({ auth: authConnection });
   // Dog Data States
   const [breedData, setBreedData] = useState<Array<string>>([]);
+
+  // Dog Pages
   const [getNextPage, setGetNextPage] = useState<boolean>(false);
+  const [getPreviousPage, setGetPreviousPage] = useState<boolean>(false);
+  const [pageNumber, setPageNumber] = useState<number>(1);
 
   // Filtering
   const [filterBy, setFilterBy] = useState<string>("");
@@ -78,22 +82,34 @@ const AdoptionPage = () => {
         {isConnected && (
           <DogAdoptions
             showNextPage={[getNextPage, setGetNextPage]}
+            showPreviousPage={[getPreviousPage, setGetPreviousPage]}
+            setPageNumber={[pageNumber, setPageNumber]}
           ></DogAdoptions>
         )}
       </div>
       <div
         section-label={"button-area"}
-      className="flex flex-row items-center mx-2 p-2"
+        className="flex flex-row items-center mx-2 p-2"
       >
         {isConnected && (
-          <div className=" w-full flex flex-row items-center justify-center">
+          <div className=" w-full flex flex-row items-center justify-center gap-5">
+            {pageNumber > 1 && (
+              <button
+                className="p-2 px-3 bg-[#2f922e] rounded-md"
+                onClick={() => {
+                  setGetPreviousPage(true);
+                }}
+              >
+                Previous
+              </button>
+            )}
             <button
-              className="p-2 px-3 bg-[#2f922e] rounded-md"
+              className="p-2 px-7 bg-[#2f922e] rounded-md"
               onClick={() => {
                 setGetNextPage(true);
               }}
             >
-              Show More
+              Next
             </button>
           </div>
         )}
