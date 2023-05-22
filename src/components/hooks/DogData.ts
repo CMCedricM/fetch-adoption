@@ -7,14 +7,14 @@ type DogDataInfo = {
   auth: AxiosInstance;
 };
 
-export type Dog = {
+export interface Dog {
   id: string;
   img: string;
   name: string;
   age: number;
   zip_code: string;
   breed: string;
-};
+}
 
 interface DogSearch {
   breeds?: Array<string>;

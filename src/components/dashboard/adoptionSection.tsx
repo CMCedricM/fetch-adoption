@@ -15,6 +15,8 @@ export const DogAdoptions = ({ showNextPage }: DogAdoptionProps) => {
   });
   const [dogIds, setDogIds] = useState<string[]>();
   const [imageThumbnails, setImageThumbnails] = useState<JSX.Element[]>();
+  const [selectedDogs, setSelectedDogs] = useState<Array<string>>([]);
+  const [aSelect, setASelect] = useState<string>("");
 
   const [loadNextPage, setLoadNextPage] = showNextPage;
   const [nextPgPointer, setNextPagePointer] = useState<string>();
@@ -46,6 +48,26 @@ export const DogAdoptions = ({ showNextPage }: DogAdoptionProps) => {
     }
   }, [loadNextPage]);
 
+  useEffect(() => {
+    console.log("changed");
+    console.log(selectedDogs);
+  }, [selectedDogs]);
+
+  useEffect(() => {
+    if (aSelect && selectedDogs.indexOf(aSelect) == -1) {
+      console.log("apended");
+      setSelectedDogs([...selectedDogs, aSelect]);
+    } else if (aSelect && selectedDogs.indexOf(aSelect) != -1) {
+      const temp = selectedDogs.filter((val) => {
+        val != aSelect;
+      });
+      console.log("removed");
+      setSelectedDogs(temp);
+    }
+
+    setASelect("");
+  }, [aSelect]);
+
   // Once we have retrieved all the dog ids, now we need to get their actual info
   useEffect(() => {
     if (dogIds) {
@@ -75,6 +97,8 @@ export const DogAdoptions = ({ showNextPage }: DogAdoptionProps) => {
             name={val.name}
             age={val.age}
             breed={val.breed}
+            selectImage={[aSelect, setASelect]}
+            starred={selectedDogs.indexOf(val.id) != -1}
           ></DogImage>
         </div>
       );
