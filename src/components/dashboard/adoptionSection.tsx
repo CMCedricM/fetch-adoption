@@ -28,13 +28,20 @@ export const DogAdoptions = ({ showNextPage }: DogAdoptionProps) => {
   }, []);
 
   // This is where we will call to get another page of dogs
+  // TODO: Bad request because array is over the length of 100
   useEffect(() => {
     if (nextPgPointer && loadNextPage) {
-      getNextPagOfDogsIDs({ nextPg: nextPgPointer }).then((data) => {
-        setNextPagePointer(data.next);
-        const newData = [...(dogIds ?? []), data.resultIds];
-        if (dogIds) setDogIds(newData.flat());
-      });
+      getNextPagOfDogsIDs({ nextPg: nextPgPointer })
+        .then((data) => {
+          setNextPagePointer(data.next);
+          const newData = [data.resultIds];
+          if (dogIds) setDogIds(newData.flat());
+          console.log("herehehreh");
+          console.log(newData.flat());
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       setLoadNextPage(false);
     }
   }, [loadNextPage]);

@@ -6,13 +6,16 @@ import { StarIcon as filledInStar } from "@heroicons/react/24/solid";
 export const DogImage = ({ id, img, name, age, zip_code, breed }: Dog) => {
   return (
     <div className="grid grid-rows-4 h-full w-full font-Rubik rounded-md gap-2">
-      <div className="rounded-md flex flex-col row-span-3">
+      <div
+        className="rounded-md flex flex-col row-span-3"
+        style={{ position: "relative" }}
+      >
         <Image
           src={img}
           alt=""
           fill
-          sizes="(max-width: 768px) 100vw"
-          className="object-contain rounded-md"
+          sizes="(max-width: 700px) 100vw"
+          className="object-contain rounded-md mt-2 p-1"
         />
       </div>
 
