@@ -17,6 +17,7 @@ type filterSideProps = {
   height?: string;
   width?: string;
   breedsData: [Array<string>, Dispatch<SetStateAction<Array<string>>>];
+  breedSelection: [string[], Dispatch<SetStateAction<string[]>>];
 };
 
 const FilterSideBar = ({
@@ -25,6 +26,7 @@ const FilterSideBar = ({
   width,
   breedsData,
   filterSetting,
+  breedSelection,
 }: filterSideProps) => {
   const [alphaSelected, setAlphaSelected] = useState<string | boolean | null>(
     null

@@ -35,6 +35,7 @@ const AdoptionPage = () => {
   const [filterBy, setFilterBy] = useState<FilterOptionTypes>(
     FilterOptionTypes.breedAZ
   );
+  const [selectedBreeds, setSelectBreeds] = useState<string[]>([]);
 
   const router = useRouter();
   useEffect(() => {
@@ -89,6 +90,7 @@ const AdoptionPage = () => {
           filterSetting={[filterBy, setFilterBy]}
           className="w-[10%] h-[80vh] bg-[#659B78] ml-2 rounded-md font-Rubik sticky top-[11vh] p-2"
           breedsData={[breedData, setBreedData]}
+          breedSelection={[selectedBreeds, setSelectBreeds]}
         />
 
         {isConnected && (
