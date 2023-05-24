@@ -15,6 +15,7 @@ type DogAdoptionProps = {
     Dispatch<SetStateAction<FilterOptionTypes>>
   ];
   selectedBreedContoller: [string[], Dispatch<SetStateAction<string[]>>];
+  arrayOfSelectedDogIds: [string[], Dispatch<SetStateAction<string[]>>];
 };
 
 export const DogAdoptions = ({
@@ -23,6 +24,7 @@ export const DogAdoptions = ({
   setPageNumber,
   filterOptions,
   selectedBreedContoller,
+  arrayOfSelectedDogIds,
 }: DogAdoptionProps) => {
   const { getDogIds, getDogData, getNextPagOfDogsIDs, findDogs } = useDogData({
     auth: authConnection,
@@ -30,7 +32,7 @@ export const DogAdoptions = ({
   const [dogIds, setDogIds] = useState<string[]>();
   const [DogsInfoStorage, setDogInfo] = useState<Dog[]>();
   const [imageThumbnails, setImageThumbnails] = useState<JSX.Element[]>();
-  const [selectedDogs, setSelectedDogs] = useState<Array<string>>([]);
+  const [selectedDogs, setSelectedDogs] = arrayOfSelectedDogIds;
   const [aSelect, setASelect] = useState<string>("");
 
   // Page Controllers
@@ -55,8 +57,6 @@ export const DogAdoptions = ({
 
   // If we  are given a selected breed, filter the results by the current filter, and get the dogs
   useEffect(() => {
-    console.log(`Dog Adoption recieved ${selectedBreed}`);
-    console.log(typeof selectedBreed);
     selectedBreed
       ? findDogs({ breeds: selectedBreed, size: 15, sort: filterBy }).then(
           (data) => {
@@ -92,7 +92,6 @@ export const DogAdoptions = ({
       (nextPgPointer || prevPgPointer) &&
       (loadNextPage || loadPreviousPage)
     ) {
-      console.log(filterBy);
       getNextPagOfDogsIDs(
         {
           nextPg:
@@ -115,9 +114,6 @@ export const DogAdoptions = ({
             loadPreviousPage ? setPage(page - 1) : setPage(page + 1);
             window.scrollTo(0, 0);
           }
-
-          // console.log("herehehreh");
-          // console.log(newData.flat());
         })
         .catch((error) => {
           console.log(error);
@@ -130,10 +126,8 @@ export const DogAdoptions = ({
 
   useEffect(() => {
     if (aSelect && selectedDogs.indexOf(aSelect) == -1) {
-      console.log("apended");
       setSelectedDogs([...selectedDogs, aSelect]);
     } else if (aSelect && selectedDogs.indexOf(aSelect) != -1) {
-      console.log(aSelect);
       const temp: string[] = [];
       selectedDogs.forEach((val, idx) => {
         if (val != aSelect) {

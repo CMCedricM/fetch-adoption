@@ -39,6 +39,14 @@ const AdoptionPage = () => {
   const [selectedBreeds, setSelectBreeds] = useState<string[]>([]);
   const [displayAlphaOrder, setDisplayAlphaOrder] = useState<boolean>(false);
 
+  // Dogs to find a match from
+  const [selectedDogs, setSelectedDogs] = useState<string[]>([]);
+
+  useEffect(() => {
+    console.log(`Updated Selected Dogs ===>`);
+    console.log(selectedDogs);
+  }, [selectedDogs]);
+
   useEffect(() => {
     console.log(`Selected breeds changed to ${selectedBreeds}`);
     if (selectedBreeds.length == 0) {
@@ -99,24 +107,34 @@ const AdoptionPage = () => {
         preventClosing={true}
         reload={[reload, setReload]}
       ></LoginModal>
-      <div section-label={"adoption-area"} className="flex flex-row">
-        <FilterSideBar
-          filterSetting={[filterBy, setFilterBy]}
-          className="w-[10%] h-[80%] bg-[#659B78] ml-2 rounded-md font-Rubik sticky top-[11vh] p-2 invisible md:visible"
-          breedsData={[breedData, setBreedData]}
-          breedSelection={[selectedBreeds, setSelectBreeds]}
-          controlAlphaOrder={[displayAlphaOrder, setDisplayAlphaOrder]}
-        />
+      <div className="flex flex-col w-full">
+        <div section-label={"adoption-area"} className="flex flex-row">
+          <div className="flex flex-col gap-3 p-2">
+            {isConnected && (
+              <FilterSideBar
+                filterSetting={[filterBy, setFilterBy]}
+                className="w-full h-[70%] bg-[#659B78] ml-2 rounded-md font-Rubik sticky top-[11vh] p-2 invisible md:visible"
+                breedsData={[breedData, setBreedData]}
+                breedSelection={[selectedBreeds, setSelectBreeds]}
+                controlAlphaOrder={[displayAlphaOrder, setDisplayAlphaOrder]}
+              />
+            )}
+            <div className="flex flex-col items-center justify-center">
+              <p>Find My Match!</p>
+            </div>
+          </div>
 
-        {isConnected && (
-          <DogAdoptions
-            showNextPage={[getNextPage, setGetNextPage]}
-            showPreviousPage={[getPreviousPage, setGetPreviousPage]}
-            setPageNumber={[pageNumber, setPageNumber]}
-            filterOptions={[filterBy, setFilterBy]}
-            selectedBreedContoller={[selectedBreeds, setSelectBreeds]}
-          ></DogAdoptions>
-        )}
+          {isConnected && (
+            <DogAdoptions
+              showNextPage={[getNextPage, setGetNextPage]}
+              showPreviousPage={[getPreviousPage, setGetPreviousPage]}
+              setPageNumber={[pageNumber, setPageNumber]}
+              filterOptions={[filterBy, setFilterBy]}
+              selectedBreedContoller={[selectedBreeds, setSelectBreeds]}
+              arrayOfSelectedDogIds={[selectedDogs, setSelectedDogs]}
+            ></DogAdoptions>
+          )}
+        </div>
       </div>
       <div
         section-label={"button-area"}
