@@ -78,7 +78,10 @@ const MyHeader = () => {
       )}
       {user && (
         <div
-          className="text-lg text-black font-Rubik font-semibold px-8 py-2 rounded-md  bg-[#2f922e]/70 hover:bg-[#2f922e]/90"
+          className="text-lg text-black font-Rubik 
+          font-semibold px-8 py-2 rounded-md 
+           bg-[#2f922e]/70 hover:bg-[#2f922e]/90
+           cursor-pointer"
           onClick={async () => {
             setShowLogoutPrompt(true);
           }}

@@ -101,14 +101,14 @@ const AdoptionPage = () => {
   }, [isConnected]);
 
   return (
-    <div className="flex flex-col w-full h-full p-5">
+    <div className="flex flex-col w-full h-full p-5 font-Rubik">
       <LoginModal
         openState={[showLoginModal, setShowLoginModal]}
         title="Login To Continue"
         preventClosing={true}
         reload={[reload, setReload]}
       ></LoginModal>
-      <div className="flex flex-col w-full border-2">
+      <div className="flex flex-col w-full">
         <div section-label={"adoption-area"} className="flex flex-row">
           {isConnected && (
             <div className="md:flex flex-col gap-3 p-2 hidden">

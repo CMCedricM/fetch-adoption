@@ -94,7 +94,7 @@ const FilterSideBar = ({
           <form className="flex flex-col items-center mt-3 gap-2">
             <input
               type="text"
-              className="w-[80%] rounded-md text-center px-2 font-Rubik"
+              className="w-[90%] rounded-md text-left py-1 px-2 font-Rubik"
               placeholder="12345"
             ></input>
             <button className="text-center bg-niceWhite rounded-md px-2">
