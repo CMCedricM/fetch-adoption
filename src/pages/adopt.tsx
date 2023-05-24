@@ -109,8 +109,8 @@ const AdoptionPage = () => {
       ></LoginModal>
       <div className="flex flex-col w-full">
         <div section-label={"adoption-area"} className="flex flex-row">
-          <div className="flex flex-col gap-3 p-2">
-            {isConnected && (
+          {isConnected && (
+            <div className="flex flex-col gap-3 p-2">
               <FilterSideBar
                 filterSetting={[filterBy, setFilterBy]}
                 className="w-full h-[70%] bg-[#659B78] ml-2 rounded-md font-Rubik sticky top-[11vh] p-2 invisible md:visible"
@@ -118,11 +118,12 @@ const AdoptionPage = () => {
                 breedSelection={[selectedBreeds, setSelectBreeds]}
                 controlAlphaOrder={[displayAlphaOrder, setDisplayAlphaOrder]}
               />
-            )}
-            <div className="flex flex-col items-center justify-center">
-              <p>Find My Match!</p>
+
+              <div className="flex flex-col items-center justify-center">
+                <p>Find My Match!</p>
+              </div>
             </div>
-          </div>
+          )}
 
           {isConnected && (
             <DogAdoptions
