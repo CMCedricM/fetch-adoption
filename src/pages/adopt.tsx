@@ -7,6 +7,7 @@ import { authConnection } from "@/components/hooks/authentication";
 import useAuth from "@/components/hooks/authentication";
 import { useDogData } from "@/components/hooks/DogData";
 import { DogAdoptions } from "@/components/dashboard/DogAdoptions";
+import MatchMe from "@/components/dashboard/MatchMe";
 
 export enum FilterOptionTypes {
   breedAZ = "breed:asc",
@@ -113,15 +114,12 @@ const AdoptionPage = () => {
             <div className="flex flex-col gap-3 p-2">
               <FilterSideBar
                 filterSetting={[filterBy, setFilterBy]}
-                className="w-full h-[70%] bg-[#659B78] ml-2 rounded-md font-Rubik sticky top-[11vh] p-2 invisible md:visible"
+                className="w-full h-max bg-[#659B78] ml-2 rounded-md font-Rubik sticky top-[11vh] p-2 invisible md:visible"
                 breedsData={[breedData, setBreedData]}
                 breedSelection={[selectedBreeds, setSelectBreeds]}
                 controlAlphaOrder={[displayAlphaOrder, setDisplayAlphaOrder]}
               />
-
-              <div className="flex flex-col items-center justify-center">
-                <p>Find My Match!</p>
-              </div>
+              <MatchMe selectedDogs={[selectedDogs, setSelectedDogs]}></MatchMe>
             </div>
           )}
 

@@ -37,6 +37,10 @@ interface DogSearchTypes {
   prevPg?: string;
 }
 
+interface Match {
+  match: string;
+}
+
 export const useDogData = ({ auth }: DogDataInfo) => {
   const getBreeds = async () => {
     const breeds = await auth.get("/dogs/breeds").catch((err) => {
@@ -110,11 +114,22 @@ export const useDogData = ({ auth }: DogDataInfo) => {
     return data as DogSearchRetTypes;
   };
 
+  const findMatch = async (dogIds: Array<string>) => {
+    const match = await auth.post("/dogs/match", dogIds).catch((err) => {
+      throw new Error(`There was an error ${err.message}`);
+    });
+
+    const { data } = match;
+
+    return data as Match;
+  };
+
   return {
     getBreeds,
     getDogIds,
     getNextPagOfDogsIDs,
     findDogs,
+    findMatch,
     getDogData,
   };
 };

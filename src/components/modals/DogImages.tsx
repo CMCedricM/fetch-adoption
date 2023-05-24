@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 
 interface DogImageProps extends Dog {
   selectImage: [string, Dispatch<SetStateAction<string>>];
-
   starred?: boolean;
 }
 
