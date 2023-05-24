@@ -108,14 +108,14 @@ const AdoptionPage = () => {
         preventClosing={true}
         reload={[reload, setReload]}
       ></LoginModal>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full border-2">
         <div section-label={"adoption-area"} className="flex flex-row">
           {isConnected && (
-            <div className="flex flex-col gap-3 p-2">
-              <div className="flex flex-col items-center gap-4 sticky top-[11vh]">
+            <div className="md:flex flex-col gap-3 p-2 hidden">
+              <div className="flex flex-col items-center gap-4 sticky top-[11vh] ">
                 <FilterSideBar
                   filterSetting={[filterBy, setFilterBy]}
-                  className="w-full h-max bg-[#659B78] ml-2 rounded-md font-Rubik  p-2 invisible md:visible"
+                  className="w-full h-max bg-[#659B78] ml-2 rounded-md font-Rubik p-2"
                   breedsData={[breedData, setBreedData]}
                   breedSelection={[selectedBreeds, setSelectBreeds]}
                   controlAlphaOrder={[displayAlphaOrder, setDisplayAlphaOrder]}
