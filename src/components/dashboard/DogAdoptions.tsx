@@ -14,6 +14,7 @@ type DogAdoptionProps = {
     FilterOptionTypes,
     Dispatch<SetStateAction<FilterOptionTypes>>
   ];
+  selectedBreedContoller: [string[], Dispatch<SetStateAction<string[]>>];
 };
 
 export const DogAdoptions = ({
@@ -21,8 +22,9 @@ export const DogAdoptions = ({
   showPreviousPage,
   setPageNumber,
   filterOptions,
+  selectedBreedContoller,
 }: DogAdoptionProps) => {
-  const { getDogIds, getDogData, getNextPagOfDogsIDs } = useDogData({
+  const { getDogIds, getDogData, getNextPagOfDogsIDs, findDogs } = useDogData({
     auth: authConnection,
   });
   const [dogIds, setDogIds] = useState<string[]>();
@@ -41,8 +43,9 @@ export const DogAdoptions = ({
 
   // Filter Controller
   const [filterBy, setFilterBy] = filterOptions;
+  const [selectedBreed, setSelectedBreed] = selectedBreedContoller;
 
-  //   We can assume we're authenticated here, so just get the Dogs
+  //   We can assume we're authenticated here, so just get the Dogs ==> Do this on page load
   useEffect(() => {
     getDogIds().then((data) => {
       setNextPagePointer(data.next);
@@ -50,17 +53,40 @@ export const DogAdoptions = ({
     });
   }, []);
 
-  //   We can assume we're authenticated here, so just get the Dogs
+  // If we  are given a selected breed, filter the results by the current filter, and get the dogs
   useEffect(() => {
-    getDogIds(filterBy).then((data) => {
-      setPage(1);
-      setPreviousPagePointer("");
-      setNextPagePointer(data.next);
-      setDogIds(data.resultIds);
-    });
-  }, [filterBy]);
+    console.log(`Dog Adoption recieved ${selectedBreed}`);
+    console.log(typeof selectedBreed);
+    selectedBreed
+      ? findDogs({ breeds: selectedBreed, size: 15, sort: filterBy }).then(
+          (data) => {
+            setPage(1);
+            setPreviousPagePointer("");
+            setNextPagePointer(data.next);
+            setDogIds(data.resultIds);
+          }
+        )
+      : getDogIds(filterBy).then((data) => {
+          setPage(1);
+          setPreviousPagePointer("");
+          setNextPagePointer(data.next);
+          setDogIds(data.resultIds);
+        });
+  }, [selectedBreed, filterBy]);
+
+  // //   We can assume we're authenticated here, so just get the Dogs
+  // useEffect(() => {
+  //   // Check if there is a selected breed, if there is not then we can query all dogs
+  //   !selectedBreed
+  //     ? getDogIds(filterBy).then((data) => {
+  //         setPage(1);
+  //         setPreviousPagePointer("");
+  //         setNextPagePointer(data.next);
+  //         setDogIds(data.resultIds);
+  //       })
+  //     : "";
+  // }, [filterBy]);
   // This is where we will call to get another page of dogs
-  // TODO: Bad request because array is over the length of 100
   useEffect(() => {
     if (
       (nextPgPointer || prevPgPointer) &&
@@ -87,6 +113,7 @@ export const DogAdoptions = ({
           if (dogIds) {
             setDogIds(newData.flat());
             loadPreviousPage ? setPage(page - 1) : setPage(page + 1);
+            window.scrollTo(0, 0);
           }
 
           // console.log("herehehreh");

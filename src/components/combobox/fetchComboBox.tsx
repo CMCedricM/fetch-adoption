@@ -3,7 +3,7 @@ import { Combobox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 
 type FetchBoxProps = {
-  selectedItem: [string, Dispatch<SetStateAction<string>>];
+  selectedItem: [string[], Dispatch<SetStateAction<string[]>>];
   itemsList: string[];
   className?: string;
 };

@@ -13,6 +13,7 @@ export enum FilterOptionTypes {
   breedZA = "breed:desc",
   ageAsc = "age:asc",
   ageDsc = "age:desc",
+  none = "",
 }
 
 const AdoptionPage = () => {
@@ -36,6 +37,19 @@ const AdoptionPage = () => {
     FilterOptionTypes.breedAZ
   );
   const [selectedBreeds, setSelectBreeds] = useState<string[]>([]);
+  const [displayAlphaOrder, setDisplayAlphaOrder] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log(`Selected breeds changed to ${selectedBreeds}`);
+    if (selectedBreeds.length == 0) {
+      setDisplayAlphaOrder(true);
+
+      console.log("disabled alpha");
+    } else {
+      setDisplayAlphaOrder(false);
+      console.log("enabled alpha");
+    }
+  }, [selectedBreeds]);
 
   const router = useRouter();
   useEffect(() => {
@@ -88,9 +102,10 @@ const AdoptionPage = () => {
       <div section-label={"adoption-area"} className="flex flex-row">
         <FilterSideBar
           filterSetting={[filterBy, setFilterBy]}
-          className="w-[10%] h-[80vh] bg-[#659B78] ml-2 rounded-md font-Rubik sticky top-[11vh] p-2"
+          className="w-[10%] h-[80%] bg-[#659B78] ml-2 rounded-md font-Rubik sticky top-[11vh] p-2 invisible md:visible"
           breedsData={[breedData, setBreedData]}
           breedSelection={[selectedBreeds, setSelectBreeds]}
+          controlAlphaOrder={[displayAlphaOrder, setDisplayAlphaOrder]}
         />
 
         {isConnected && (
@@ -99,6 +114,7 @@ const AdoptionPage = () => {
             showPreviousPage={[getPreviousPage, setGetPreviousPage]}
             setPageNumber={[pageNumber, setPageNumber]}
             filterOptions={[filterBy, setFilterBy]}
+            selectedBreedContoller={[selectedBreeds, setSelectBreeds]}
           ></DogAdoptions>
         )}
       </div>

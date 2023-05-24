@@ -17,7 +17,7 @@ export interface Dog {
 }
 
 interface DogSearch {
-  breeds?: Array<string>;
+  breeds?: string[];
   zipCodes?: Array<string>;
   ageMin?: Number;
   ageMax?: Number;
@@ -47,7 +47,7 @@ export const useDogData = ({ auth }: DogDataInfo) => {
     return data as string[];
   };
 
-  const getDogIds = async (filter?: string) => {
+  const getDogIds = async (filter?: string, searchSettings?: DogSearch) => {
     const res = await auth
       .get("/dogs/search", {
         params: {
