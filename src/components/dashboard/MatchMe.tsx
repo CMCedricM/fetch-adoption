@@ -13,10 +13,16 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
 
   const [selectedImage, setSelectedImage] = useState<string>("");
 
+  const [allowMatch, setAllowMatch] = useState(false);
+
   const [getTheMatch, setGetTheMatch] = useState<boolean>(false);
   const [match, setMatch] = useState<Dog>();
   const [showMatchModal, setShowMatchModal] = useState<boolean>(false);
   const { findMatch, getDogData } = useDogData({ auth: authConnection });
+
+  useEffect(() => {
+    arrayOfSelected.length > 0 ? setAllowMatch(true) : setAllowMatch(false);
+  }, [arrayOfSelected]);
 
   useEffect(() => {
     if (getTheMatch) {
@@ -25,6 +31,7 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
           getDogData([data.match]).then((dogObj) => {
             setMatch(dogObj[0]);
             setShowMatchModal(true);
+            setGetTheMatch(false);
           })
         )
         .catch((err) => {
@@ -41,7 +48,6 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
         dialogTitle={"Your Match!"}
       >
         <div className="flex flex-col items-center gap-2">
-          {`Here is your match: ${match?.name}`}
           <DogImage
             id={match?.id ?? ""}
             name={match?.name ?? ""}
@@ -60,12 +66,18 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
           </button>
         </div>
       </FetchModal>
-      <div
-        className="rounded-md bg-button_green p-2"
-        onClick={() => setGetTheMatch(true)}
+
+      <button
+        title={`${!allowMatch ? "Select Some Dogs To Find Your Match" : ""}`}
+        className={` rounded-md ${
+          allowMatch
+            ? "bg-button_green cursor-pointer"
+            : "bg-gray cursor-not-allowed "
+        } p-2 `}
+        onClick={() => (allowMatch ? setGetTheMatch(true) : "")}
       >
         Match Me
-      </div>
+      </button>
     </div>
   );
 };
