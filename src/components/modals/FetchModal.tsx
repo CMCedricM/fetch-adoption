@@ -64,7 +64,7 @@ const FetchModal = ({
                   {dialogTitle && (
                     <Dialog.Title
                       as="h3"
-                      className="px-3 text-lg font-medium leading-6 text-gray-900"
+                      className="px-3 text-[24px] font-bold leading-6 text-gray-900 text-center"
                     >
                       {dialogTitle}
                     </Dialog.Title>

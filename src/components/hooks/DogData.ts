@@ -1,23 +1,23 @@
 import { AxiosInstance } from "axios";
 import { useState } from "react";
-import { DogAdoptions } from "../dashboard/adoptionSection";
+import { DogAdoptions } from "../dashboard/DogAdoptions";
 import next from "next/types";
 
 type DogDataInfo = {
   auth: AxiosInstance;
 };
 
-export type Dog = {
+export interface Dog {
   id: string;
   img: string;
   name: string;
   age: number;
   zip_code: string;
   breed: string;
-};
+}
 
 interface DogSearch {
-  breeds?: Array<string>;
+  breeds?: string[];
   zipCodes?: Array<string>;
   ageMin?: Number;
   ageMax?: Number;
@@ -37,6 +37,10 @@ interface DogSearchTypes {
   prevPg?: string;
 }
 
+interface Match {
+  match: string;
+}
+
 export const useDogData = ({ auth }: DogDataInfo) => {
   const getBreeds = async () => {
     const breeds = await auth.get("/dogs/breeds").catch((err) => {
@@ -47,7 +51,7 @@ export const useDogData = ({ auth }: DogDataInfo) => {
     return data as string[];
   };
 
-  const getDogIds = async (filter?: string) => {
+  const getDogIds = async (filter?: string, searchSettings?: DogSearch) => {
     const res = await auth
       .get("/dogs/search", {
         params: {
@@ -94,8 +98,8 @@ export const useDogData = ({ auth }: DogDataInfo) => {
       });
 
     const { data } = res;
-    console.log("Data For Next Page");
-    console.log(data);
+    // console.log("Data For Next Page");
+    // console.log(data);
     return data as DogSearchRetTypes;
   };
 
@@ -110,11 +114,22 @@ export const useDogData = ({ auth }: DogDataInfo) => {
     return data as DogSearchRetTypes;
   };
 
+  const findMatch = async (dogIds: Array<string>) => {
+    const match = await auth.post("/dogs/match", dogIds).catch((err) => {
+      throw new Error(`There was an error ${err.message}`);
+    });
+
+    const { data } = match;
+
+    return data as Match;
+  };
+
   return {
     getBreeds,
     getDogIds,
     getNextPagOfDogsIDs,
     findDogs,
+    findMatch,
     getDogData,
   };
 };

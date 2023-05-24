@@ -46,9 +46,12 @@ const MyHeader = () => {
               className="items-center  bg-[#2f922e]/70 w-[20%] rounded-md p-2 font-semibold"
               onClick={async () => {
                 try {
-                  await signOut();
-                  router.refresh();
+                  await signOut().then(() => {
+                    setShowLogoutPrompt(false);
+                    router.refresh();
+                  });
                 } catch (err) {
+                  localStorage.removeItem("user_info");
                   console.log((err as Error).message);
                 }
               }}
@@ -75,17 +78,12 @@ const MyHeader = () => {
       )}
       {user && (
         <div
-          className="text-lg text-black font-Rubik font-semibold px-8 py-2 rounded-md  bg-[#2f922e]/70 hover:bg-[#2f922e]/90"
+          className="text-lg text-black font-Rubik 
+          font-semibold px-8 py-2 rounded-md 
+           bg-[#2f922e]/70 hover:bg-[#2f922e]/90
+           cursor-pointer"
           onClick={async () => {
             setShowLogoutPrompt(true);
-            // try {
-            //   await signOut();
-            //   router.refresh();
-            // } catch (err) {
-            //   console.log((err as Error).message);
-            // }
-            // console.log("sign out");
-            // setUser("");
           }}
         >
           {`Hello, ${user}`}

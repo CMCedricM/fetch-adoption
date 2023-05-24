@@ -10,7 +10,9 @@ module.exports = {
     colors : {
       'niceWhite' : '#fdfafa',
       'red' : '#FF0000',
-      'black': '#000000'
+      'black': '#000000', 
+      'button_green' : '#2f922e',
+      'gray' : '#818589'
     },
     extend: {
       backgroundImage: {

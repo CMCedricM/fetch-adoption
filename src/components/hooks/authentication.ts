@@ -53,7 +53,6 @@ const useAuth = () => {
       return false;
     } else if (status == 200) {
       setLoggedIn(true);
-      console.log("here");
       return true;
     } else {
       throw new Error(`There was an error with status ${status}`);
