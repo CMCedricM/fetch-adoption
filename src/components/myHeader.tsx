@@ -81,14 +81,6 @@ const MyHeader = () => {
           className="text-lg text-black font-Rubik font-semibold px-8 py-2 rounded-md  bg-[#2f922e]/70 hover:bg-[#2f922e]/90"
           onClick={async () => {
             setShowLogoutPrompt(true);
-            // try {
-            //   await signOut();
-            //   router.refresh();
-            // } catch (err) {
-            //   console.log((err as Error).message);
-            // }
-            // console.log("sign out");
-            // setUser("");
           }}
         >
           {`Hello, ${user}`}
