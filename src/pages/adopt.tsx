@@ -112,14 +112,18 @@ const AdoptionPage = () => {
         <div section-label={"adoption-area"} className="flex flex-row">
           {isConnected && (
             <div className="flex flex-col gap-3 p-2">
-              <FilterSideBar
-                filterSetting={[filterBy, setFilterBy]}
-                className="w-full h-max bg-[#659B78] ml-2 rounded-md font-Rubik sticky top-[11vh] p-2 invisible md:visible"
-                breedsData={[breedData, setBreedData]}
-                breedSelection={[selectedBreeds, setSelectBreeds]}
-                controlAlphaOrder={[displayAlphaOrder, setDisplayAlphaOrder]}
-              />
-              <MatchMe selectedDogs={[selectedDogs, setSelectedDogs]}></MatchMe>
+              <div className="flex flex-col items-center gap-4 sticky top-[11vh]">
+                <FilterSideBar
+                  filterSetting={[filterBy, setFilterBy]}
+                  className="w-full h-max bg-[#659B78] ml-2 rounded-md font-Rubik  p-2 invisible md:visible"
+                  breedsData={[breedData, setBreedData]}
+                  breedSelection={[selectedBreeds, setSelectBreeds]}
+                  controlAlphaOrder={[displayAlphaOrder, setDisplayAlphaOrder]}
+                />
+                <MatchMe
+                  selectedDogs={[selectedDogs, setSelectedDogs]}
+                ></MatchMe>
+              </div>
             </div>
           )}
 
