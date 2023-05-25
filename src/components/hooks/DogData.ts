@@ -42,6 +42,8 @@ interface Match {
 }
 
 export const useDogData = ({ auth }: DogDataInfo) => {
+  const [dogsTotal, setDogsTotal] = useState<number>(0);
+
   const getBreeds = async () => {
     const breeds = await auth.get("/dogs/breeds").catch((err) => {
       throw new Error(`Unable to Fetch Breeds ==> ${(err as Error).message} `);
@@ -64,6 +66,9 @@ export const useDogData = ({ auth }: DogDataInfo) => {
       });
 
     const { data } = res;
+    console.log(data);
+    // Always set the current dog count for every dogs search query
+    setDogsTotal((data as DogSearchRetTypes).total);
     return data as DogSearchRetTypes;
   };
 
@@ -99,7 +104,7 @@ export const useDogData = ({ auth }: DogDataInfo) => {
 
     const { data } = res;
     // console.log("Data For Next Page");
-    // console.log(data);
+    console.log(data);
     return data as DogSearchRetTypes;
   };
 
@@ -111,6 +116,8 @@ export const useDogData = ({ auth }: DogDataInfo) => {
       });
 
     const { data } = res;
+    console.log(data);
+    setDogsTotal((data as DogSearchRetTypes).total);
     return data as DogSearchRetTypes;
   };
 
@@ -131,5 +138,6 @@ export const useDogData = ({ auth }: DogDataInfo) => {
     findDogs,
     findMatch,
     getDogData,
+    dogsTotal,
   };
 };

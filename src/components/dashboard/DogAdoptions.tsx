@@ -10,6 +10,7 @@ type DogAdoptionProps = {
   showNextPage: [boolean, Dispatch<SetStateAction<boolean>>];
   showPreviousPage: [boolean, Dispatch<SetStateAction<boolean>>];
   setPageNumber: [number, Dispatch<SetStateAction<number>>];
+  pagNumberCount: [number, Dispatch<SetStateAction<number>>];
   filterOptions: [
     FilterOptionTypes,
     Dispatch<SetStateAction<FilterOptionTypes>>
@@ -22,13 +23,15 @@ export const DogAdoptions = ({
   showNextPage,
   showPreviousPage,
   setPageNumber,
+  pagNumberCount,
   filterOptions,
   selectedBreedContoller,
   arrayOfSelectedDogIds,
 }: DogAdoptionProps) => {
-  const { getDogIds, getDogData, getNextPagOfDogsIDs, findDogs } = useDogData({
-    auth: authConnection,
-  });
+  const { getDogIds, getDogData, getNextPagOfDogsIDs, findDogs, dogsTotal } =
+    useDogData({
+      auth: authConnection,
+    });
   const [dogIds, setDogIds] = useState<string[]>();
   const [DogsInfoStorage, setDogInfo] = useState<Dog[]>();
   const [imageThumbnails, setImageThumbnails] = useState<JSX.Element[]>();
@@ -37,6 +40,7 @@ export const DogAdoptions = ({
 
   // Page Controllers
   const [page, setPage] = setPageNumber;
+  const [pageNumbers, setPageNumbers] = pagNumberCount;
   const [loadNextPage, setLoadNextPage] = showNextPage;
   const [nextPgPointer, setNextPagePointer] = useState<string>();
 
@@ -54,6 +58,13 @@ export const DogAdoptions = ({
       setDogIds(data.resultIds);
     });
   }, []);
+
+  // Every Time we send a query we need to check the count of the pages and update page numbers as necessary
+  useEffect(() => {
+    console.log("Total Changed");
+
+    setPageNumbers(dogsTotal / 15);
+  }, [dogsTotal]);
 
   // If we  are given a selected breed, filter the results by the current filter, and get the dogs
   useEffect(() => {
