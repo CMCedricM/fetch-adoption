@@ -51,26 +51,39 @@ const AdoptionPage = () => {
 
   //  Generate Pages Count at bottom
   useEffect(() => {
-    const pagesNumber: JSX.Element[] = [];
-    if (currentPageNumber == pagesCount) {
-      setShowNextButton(false);
-    } else {
-      setShowNextButton(true);
+    const maxBehind = 3;
+    const jsxArray: JSX.Element[] = [];
+    let numberArr: number[] = [currentPageNumber];
+    for (let i = currentPageNumber; i < maxBehind + currentPageNumber; i++) {
+      const lastNumber = numberArr.at(numberArr.length - 1);
+      numberArr = [i - 1, ...numberArr, lastNumber ? lastNumber + 1 : 0];
     }
-    for (let i = 1; i <= pagesCount; i++) {
-      pagesNumber.push(
+    if (currentPageNumber != pagesCount) {
+      const lastNumber = numberArr.at(numberArr.length - 1);
+      numberArr = [...numberArr, lastNumber ? lastNumber + 1 : 0];
+    } else if (currentPageNumber == pagesCount) {
+      numberArr = numberArr.filter((val) => val <= pagesCount);
+    }
+    // Remove Duplicates and Zeros
+
+    numberArr = numberArr
+      .filter((val, idx) => {
+        return val != 0 && numberArr.indexOf(val) == idx;
+      })
+      .sort();
+
+    // Now Push to the Array
+    numberArr.forEach((val, idx) => {
+      jsxArray.push(
         <div
-          key={i}
-          onClick={() => setSpecificPage(i)}
-          className={`${
-            currentPageNumber == i ? "border-2 px-1" : ""
-          } cursor-pointer`}
+          key={idx}
+          className={`${currentPageNumber == val ? "border-2" : ""}`}
         >
-          {i}
+          {val}
         </div>
       );
-    }
-    setPagesCountShown(pagesNumber);
+    });
+    setPagesCountShown(jsxArray);
   }, [pagesCount, currentPageNumber]);
 
   // If a Specific Breed Is Selected From the filter, then disable the alpha sort
