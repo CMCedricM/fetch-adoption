@@ -3,6 +3,7 @@ import { useState } from "react";
 import { DogAdoptions } from "../dashboard/DogAdoptions";
 import next from "next/types";
 
+const maxDogsToGet = 15;
 type DogDataInfo = {
   auth: AxiosInstance;
 };
@@ -23,6 +24,7 @@ interface DogSearch {
   ageMax?: Number;
   size: Number;
   sort: string;
+  from?: string;
 }
 
 interface DogSearchRetTypes {

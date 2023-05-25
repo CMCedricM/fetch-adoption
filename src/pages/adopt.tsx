@@ -35,6 +35,9 @@ const AdoptionPage = () => {
   const [currentPageNumber, setcurrentPageNumber] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(1);
   const [pagesCountShown, setPagesCountShown] = useState<number[]>([]);
+  const [goToSpecificPage, setSpecificPage] = useState<number>(0);
+
+  const [showNextButton, setShowNextButton] = useState<boolean>(true);
 
   // Filtering
   const [filterBy, setFilterBy] = useState<FilterOptionTypes>(
@@ -49,7 +52,11 @@ const AdoptionPage = () => {
   //  Generate Pages Count at bottom
   useEffect(() => {
     const pagesNumber: number[] = [];
-
+    if (currentPageNumber == pagesCount) {
+      setShowNextButton(false);
+    } else {
+      setShowNextButton(true);
+    }
     for (let i = 1; i <= pagesCount; i++) {
       pagesNumber.push(i);
     }
@@ -80,7 +87,7 @@ const AdoptionPage = () => {
       <div className="flex flex-row">
         {pagesCountShown &&
           pagesCountShown?.map((number) => {
-            if (number + 1 <= maxPgCntToShow + currentPageNumber) {
+            if (number <= maxPgCntToShow + currentPageNumber) {
               if (number < currentPageNumber - maxPrevPgCntToShow) {
                 if (elipsesBefore) {
                   return;
@@ -97,10 +104,12 @@ const AdoptionPage = () => {
                   <button
                     className={`${
                       currentPageNumber == number
-                        ? "border-2 border-solid px-1"
+                        ? "border-2 border-solid px-1 rounded-md"
                         : ""
                     }`}
-                    onClick={() => setcurrentPageNumber(number)}
+                    onClick={() => {
+                      setSpecificPage(number);
+                    }}
                   >
                     {number}
                   </button>
@@ -186,6 +195,7 @@ const AdoptionPage = () => {
           {isConnected && (
             <DogAdoptions
               pagNumberCount={[pagesCount, setPagesCount]}
+              specificPageNumber={[goToSpecificPage, setSpecificPage]}
               showNextPage={[getNextPage, setGetNextPage]}
               showPreviousPage={[getPreviousPage, setGetPreviousPage]}
               setPageNumber={[currentPageNumber, setcurrentPageNumber]}
@@ -216,14 +226,16 @@ const AdoptionPage = () => {
             <div className="flex flex-row  gap-2 p-2 w-fulloverflow-hidden ">
               {createPageNumbers()}
             </div>
-            <button
-              className="p-2 px-7 bg-[#2f922e] rounded-md"
-              onClick={() => {
-                setGetNextPage(true);
-              }}
-            >
-              Next
-            </button>
+            {showNextButton && (
+              <button
+                className="p-2 px-7 bg-[#2f922e] rounded-md"
+                onClick={() => {
+                  setGetNextPage(true);
+                }}
+              >
+                Next
+              </button>
+            )}
           </div>
         )}
       </div>
