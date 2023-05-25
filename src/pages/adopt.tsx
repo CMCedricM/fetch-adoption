@@ -34,7 +34,7 @@ const AdoptionPage = () => {
   const [getPreviousPage, setGetPreviousPage] = useState<boolean>(false);
   const [currentPageNumber, setcurrentPageNumber] = useState<number>(1);
   const [pagesCount, setPagesCount] = useState<number>(1);
-  const [pagesCountShown, setPagesCountShown] = useState<number[]>([]);
+  const [pagesCountShown, setPagesCountShown] = useState<JSX.Element[]>([]);
   const [goToSpecificPage, setSpecificPage] = useState<number>(0);
 
   const [showNextButton, setShowNextButton] = useState<boolean>(true);
@@ -51,16 +51,25 @@ const AdoptionPage = () => {
 
   //  Generate Pages Count at bottom
   useEffect(() => {
-    const pagesNumber: number[] = [];
+    const pagesNumber: JSX.Element[] = [];
     if (currentPageNumber == pagesCount) {
       setShowNextButton(false);
     } else {
       setShowNextButton(true);
     }
     for (let i = 1; i <= pagesCount; i++) {
-      pagesNumber.push(i);
+      pagesNumber.push(
+        <div
+          key={i}
+          onClick={() => setSpecificPage(i)}
+          className={`${
+            currentPageNumber == i ? "border-2 px-1" : ""
+          } cursor-pointer`}
+        >
+          {i}
+        </div>
+      );
     }
-    console.log(pagesCount);
     setPagesCountShown(pagesNumber);
   }, [pagesCount, currentPageNumber]);
 
@@ -83,49 +92,7 @@ const AdoptionPage = () => {
   const createPageNumbers = () => {
     let elipsesCreated = false;
     let elipsesBefore = false;
-    return (
-      <div className="flex flex-row">
-        {pagesCountShown &&
-          pagesCountShown?.map((number) => {
-            if (number <= maxPgCntToShow + currentPageNumber) {
-              if (number < currentPageNumber - maxPrevPgCntToShow) {
-                if (elipsesBefore) {
-                  return;
-                }
-                elipsesBefore = true;
-                return (
-                  <div key={number++} className="p-5">
-                    ...
-                  </div>
-                );
-              }
-              return (
-                <div key={number++} className="p-5">
-                  <button
-                    className={`${
-                      currentPageNumber == number
-                        ? "border-2 border-solid px-1 rounded-md"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      setSpecificPage(number);
-                    }}
-                  >
-                    {number}
-                  </button>
-                </div>
-              );
-            } else if (!elipsesCreated) {
-              elipsesCreated = true;
-              return (
-                <div key={number++} className="p-5">
-                  ...
-                </div>
-              );
-            }
-          })}
-      </div>
-    );
+    return <div className="flex flex-row"></div>;
   };
 
   const router = useRouter();
@@ -223,8 +190,8 @@ const AdoptionPage = () => {
               </button>
             )}
             {/* Show Pages Numebrs Here */}
-            <div className="flex flex-row  gap-2 p-2 w-fulloverflow-hidden ">
-              {createPageNumbers()}
+            <div className="flex flex-row  gap-2 p-2 w-[10vw] overflow-hidden ">
+              {pagesCountShown && pagesCountShown}
             </div>
             {showNextButton && (
               <button

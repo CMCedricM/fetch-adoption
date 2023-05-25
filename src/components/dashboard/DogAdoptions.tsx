@@ -6,6 +6,8 @@ import { DogImage } from "../modals/DogImages";
 import { SetStateAction, Dispatch } from "react";
 import { FilterOptionTypes } from "@/pages/adopt";
 
+const dogsPerPage = 15;
+
 type DogAdoptionProps = {
   showNextPage: [boolean, Dispatch<SetStateAction<boolean>>];
   showPreviousPage: [boolean, Dispatch<SetStateAction<boolean>>];
@@ -60,11 +62,12 @@ export const DogAdoptions = ({
   // This gets a certain page of the dog
   useEffect(() => {
     setCursor(page.toString());
+
     findDogs({
       breeds: selectedBreed,
       size: 15,
       sort: filterBy,
-      from: (specificPage * 15).toString(),
+      from: (specificPage * dogsPerPage - dogsPerPage).toString(),
     })
       .then((data) => {
         // Set our page pointers/URLS
