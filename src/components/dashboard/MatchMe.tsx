@@ -41,7 +41,7 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
   }, [getTheMatch]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center gap-2 font-Rubik">
       <FetchModal
         openState={[showMatchModal, setShowMatchModal]}
         colorScheme="bg-[#E0E1BC]"
@@ -66,18 +66,27 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
           </button>
         </div>
       </FetchModal>
-
-      <button
-        title={`${!allowMatch ? "Select Some Dogs To Find Your Match" : ""}`}
-        className={` rounded-md ${
-          allowMatch
-            ? "bg-button_green cursor-pointer"
-            : "bg-gray cursor-not-allowed "
-        } p-2 `}
-        onClick={() => (allowMatch ? setGetTheMatch(true) : "")}
-      >
-        Match Me
-      </button>
+      <div className="grid grid-rows-2 items-center gap-2">
+        <button
+          title={`${!allowMatch ? "Select Some Dogs To Find Your Match" : ""}`}
+          className={` rounded-md ${
+            allowMatch
+              ? "bg-button_green cursor-pointer"
+              : "bg-gray cursor-not-allowed "
+          } p-2 `}
+          onClick={() => (allowMatch ? setGetTheMatch(true) : "")}
+        >
+          Match Me
+        </button>
+        <button
+          className={` rounded-md ${
+            allowMatch ? "bg-button_green cursor-pointer" : "hidden"
+          } p-2 `}
+          onClick={() => (allowMatch ? setArrayOfSelected([]) : "")}
+        >
+          Clear
+        </button>
+      </div>
     </div>
   );
 };

@@ -203,10 +203,10 @@ const AdoptionPage = () => {
       </div>
       <div
         section-label={"button-area"}
-        className="grid grid-row-3 items-center mx-2 p-2 "
+        className="flex flex-row items-center mx-2 p-2 w-full "
       >
         {isConnected && (
-          <div className=" w-full flex flex-row items-center justify-center gap-5">
+          <div className="w-full flex flex-row items-center justify-center gap-5">
             {currentPageNumber > 1 && (
               <button
                 className="p-2 px-3 bg-[#2f922e] rounded-md"
