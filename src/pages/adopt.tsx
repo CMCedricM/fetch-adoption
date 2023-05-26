@@ -56,7 +56,12 @@ const AdoptionPage = () => {
     let numberArr: number[] = [currentPageNumber];
     for (let i = currentPageNumber; i < maxBehind + currentPageNumber; i++) {
       const lastNumber = numberArr.at(numberArr.length - 1);
-      numberArr = [i - 1, ...numberArr, lastNumber ? lastNumber + 1 : 0];
+      const frontNumber = numberArr.at(0);
+      numberArr = [
+        frontNumber ? Number(frontNumber - 1) : 0,
+        ...numberArr,
+        lastNumber ? Number(lastNumber + 1) : 0,
+      ];
     }
     if (currentPageNumber != pagesCount) {
       const lastNumber = numberArr.at(numberArr.length - 1);
@@ -65,25 +70,41 @@ const AdoptionPage = () => {
       numberArr = numberArr.filter((val) => val <= pagesCount);
     }
     // Remove Duplicates and Zeros
-
-    numberArr = numberArr
-      .filter((val, idx) => {
-        return val != 0 && numberArr.indexOf(val) == idx;
-      })
-      .sort();
-
+    numberArr = numberArr.sort((a, b) => {
+      if (Number(a) > Number(b)) {
+        return 1;
+      } else if (Number(a) < Number(b)) {
+        return 0;
+      } else {
+        return -1;
+      }
+    });
+    numberArr = numberArr.filter((val, idx) => {
+      return val != 0 && numberArr.indexOf(val) == idx;
+    });
+    // Pre Append the elipses if necessary
+    if (numberArr.indexOf(1) == -1) {
+      jsxArray.push(<div key={0}>...</div>);
+    }
     // Now Push to the Array
     numberArr.forEach((val, idx) => {
       jsxArray.push(
         <div
-          key={idx}
+          key={idx + 1}
           className={`${currentPageNumber == val ? "border-2" : ""}`}
         >
           {val}
         </div>
       );
     });
+
+    // Add Ellipses at end if necessary
+    if (numberArr.indexOf(pagesCount) == -1) {
+      jsxArray.push(<div key={pagesCount + 1}>...</div>);
+    }
+
     setPagesCountShown(jsxArray);
+    console.log(numberArr);
   }, [pagesCount, currentPageNumber]);
 
   // If a Specific Breed Is Selected From the filter, then disable the alpha sort
@@ -203,7 +224,7 @@ const AdoptionPage = () => {
               </button>
             )}
             {/* Show Pages Numebrs Here */}
-            <div className="flex flex-row  gap-2 p-2 w-[10vw] overflow-hidden ">
+            <div className="flex flex-row  gap-2 p-2  overflow-hidden ">
               {pagesCountShown && pagesCountShown}
             </div>
             {showNextButton && (
