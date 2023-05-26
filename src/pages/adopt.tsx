@@ -80,7 +80,7 @@ const AdoptionPage = () => {
       }
     });
     numberArr = numberArr.filter((val, idx) => {
-      return val != 0 && numberArr.indexOf(val) == idx;
+      return val != 0 && numberArr.indexOf(val) == idx && val < pagesCount;
     });
     // Pre Append the elipses if necessary
     if (numberArr.indexOf(1) == -1) {
@@ -91,7 +91,10 @@ const AdoptionPage = () => {
       jsxArray.push(
         <div
           key={idx + 1}
-          className={`${currentPageNumber == val ? "border-2" : ""}`}
+          className={`${
+            currentPageNumber == val ? "border-2 rounded-md px-2" : ""
+          } cursor-pointer`}
+          onClick={() => setSpecificPage(val)}
         >
           {val}
         </div>
@@ -119,15 +122,6 @@ const AdoptionPage = () => {
       console.log("enabled alpha");
     }
   }, [selectedBreeds]);
-
-  const maxPgCntToShow = 2;
-  const maxPrevPgCntToShow = 3;
-
-  const createPageNumbers = () => {
-    let elipsesCreated = false;
-    let elipsesBefore = false;
-    return <div className="flex flex-row"></div>;
-  };
 
   const router = useRouter();
 
