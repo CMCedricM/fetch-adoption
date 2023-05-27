@@ -6,10 +6,14 @@ import { DogImage } from "../modals/DogImages";
 import { SetStateAction, Dispatch } from "react";
 import { FilterOptionTypes } from "@/pages/adopt";
 
+const dogsPerPage = 15;
+
 type DogAdoptionProps = {
   showNextPage: [boolean, Dispatch<SetStateAction<boolean>>];
   showPreviousPage: [boolean, Dispatch<SetStateAction<boolean>>];
   setPageNumber: [number, Dispatch<SetStateAction<number>>];
+  pagNumberCount: [number, Dispatch<SetStateAction<number>>];
+  specificPageNumber: [number, Dispatch<SetStateAction<number>>];
   filterOptions: [
     FilterOptionTypes,
     Dispatch<SetStateAction<FilterOptionTypes>>
@@ -22,13 +26,16 @@ export const DogAdoptions = ({
   showNextPage,
   showPreviousPage,
   setPageNumber,
+  pagNumberCount,
   filterOptions,
   selectedBreedContoller,
   arrayOfSelectedDogIds,
+  specificPageNumber,
 }: DogAdoptionProps) => {
-  const { getDogIds, getDogData, getNextPagOfDogsIDs, findDogs } = useDogData({
-    auth: authConnection,
-  });
+  const { getDogIds, getDogData, getNextPagOfDogsIDs, findDogs, dogsTotal } =
+    useDogData({
+      auth: authConnection,
+    });
   const [dogIds, setDogIds] = useState<string[]>();
   const [DogsInfoStorage, setDogInfo] = useState<Dog[]>();
   const [imageThumbnails, setImageThumbnails] = useState<JSX.Element[]>();
@@ -37,15 +44,47 @@ export const DogAdoptions = ({
 
   // Page Controllers
   const [page, setPage] = setPageNumber;
+  const [pageNumbers, setPageNumbers] = pagNumberCount;
   const [loadNextPage, setLoadNextPage] = showNextPage;
   const [nextPgPointer, setNextPagePointer] = useState<string>();
+  const [specificPage, setSpecificPage] = specificPageNumber;
 
   const [loadPreviousPage, setLoadPreviousPage] = showPreviousPage;
   const [prevPgPointer, setPreviousPagePointer] = useState<string>();
 
+  const [cursor, setCursor] = useState<string>("");
+
   // Filter Controller
   const [filterBy, setFilterBy] = filterOptions;
   const [selectedBreed, setSelectedBreed] = selectedBreedContoller;
+
+  // UseEffect to listen to page changes
+  // This gets a certain page of the dog
+  useEffect(() => {
+    setCursor(page.toString());
+
+    findDogs({
+      breeds: selectedBreed,
+      size: 15,
+      sort: filterBy,
+      from: (specificPage * dogsPerPage - dogsPerPage).toString(),
+    })
+      .then((data) => {
+        // Set our page pointers/URLS
+        setPage(specificPage);
+        setPreviousPagePointer(data.prev);
+        setNextPagePointer(data.next);
+        // Map our new data
+        const newData = [data.resultIds];
+        if (dogIds) {
+          setDogIds(newData.flat());
+          window.scrollTo(0, 0);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [specificPage]);
 
   //   We can assume we're authenticated here, so just get the Dogs ==> Do this on page load
   useEffect(() => {
@@ -54,6 +93,12 @@ export const DogAdoptions = ({
       setDogIds(data.resultIds);
     });
   }, []);
+
+  // Every Time we send a query we need to check the count of the pages and update page numbers as necessary
+  useEffect(() => {
+    console.log("Total Changed");
+    setPageNumbers(Math.ceil(dogsTotal / 15));
+  }, [dogsTotal]);
 
   // If we  are given a selected breed, filter the results by the current filter, and get the dogs
   useEffect(() => {
@@ -74,18 +119,6 @@ export const DogAdoptions = ({
         });
   }, [selectedBreed, filterBy]);
 
-  // //   We can assume we're authenticated here, so just get the Dogs
-  // useEffect(() => {
-  //   // Check if there is a selected breed, if there is not then we can query all dogs
-  //   !selectedBreed
-  //     ? getDogIds(filterBy).then((data) => {
-  //         setPage(1);
-  //         setPreviousPagePointer("");
-  //         setNextPagePointer(data.next);
-  //         setDogIds(data.resultIds);
-  //       })
-  //     : "";
-  // }, [filterBy]);
   // This is where we will call to get another page of dogs
   useEffect(() => {
     if (

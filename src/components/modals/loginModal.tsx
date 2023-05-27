@@ -80,6 +80,7 @@ const LoginModal = ({
             <input
               type="text"
               className="border-2 border-gray-400 rounded-md px-2 py-1"
+              data-test="username_input"
               {...register("userName", {
                 required: true,
               })}
@@ -90,6 +91,7 @@ const LoginModal = ({
             <p className="font-medium text-lg">Your Email:</p>
             <input
               type="text"
+              data-test="email_input"
               className="border-2 border-gray-400 rounded-md px-2 py-1"
               {...register("email", {
                 required: true,
@@ -102,6 +104,7 @@ const LoginModal = ({
           </div>
           <div className="flex flex-col items-center">
             <button
+              data-test="login_submit"
               type="submit"
               className="items-center  bg-[#2f922e]/70 w-[20%] rounded-md p-2 font-semibold"
             >

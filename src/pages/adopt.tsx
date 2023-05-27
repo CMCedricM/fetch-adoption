@@ -8,6 +8,7 @@ import useAuth from "@/components/hooks/authentication";
 import { useDogData } from "@/components/hooks/DogData";
 import { DogAdoptions } from "@/components/dashboard/DogAdoptions";
 import MatchMe from "@/components/dashboard/MatchMe";
+import { CurrencyEuroIcon } from "@heroicons/react/24/outline";
 
 export enum FilterOptionTypes {
   breedAZ = "breed:asc",
@@ -31,7 +32,12 @@ const AdoptionPage = () => {
   // Dog Pages
   const [getNextPage, setGetNextPage] = useState<boolean>(false);
   const [getPreviousPage, setGetPreviousPage] = useState<boolean>(false);
-  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [currentPageNumber, setcurrentPageNumber] = useState<number>(1);
+  const [pagesCount, setPagesCount] = useState<number>(1);
+  const [pagesCountShown, setPagesCountShown] = useState<JSX.Element[]>([]);
+  const [goToSpecificPage, setSpecificPage] = useState<number>(0);
+
+  const [showNextButton, setShowNextButton] = useState<boolean>(true);
 
   // Filtering
   const [filterBy, setFilterBy] = useState<FilterOptionTypes>(
@@ -43,11 +49,68 @@ const AdoptionPage = () => {
   // Dogs to find a match from
   const [selectedDogs, setSelectedDogs] = useState<string[]>([]);
 
+  //  Generate Pages Count at bottom
   useEffect(() => {
-    console.log(`Updated Selected Dogs ===>`);
-    console.log(selectedDogs);
-  }, [selectedDogs]);
+    const maxBehind = 3;
+    const jsxArray: JSX.Element[] = [];
+    let numberArr: number[] = [currentPageNumber];
+    for (let i = currentPageNumber; i < maxBehind + currentPageNumber; i++) {
+      const lastNumber = numberArr.at(numberArr.length - 1);
+      const frontNumber = numberArr.at(0);
+      numberArr = [
+        frontNumber ? Number(frontNumber - 1) : 0,
+        ...numberArr,
+        lastNumber ? Number(lastNumber + 1) : 0,
+      ];
+    }
+    if (currentPageNumber != pagesCount) {
+      const lastNumber = numberArr.at(numberArr.length - 1);
+      numberArr = [...numberArr, lastNumber ? lastNumber + 1 : 0];
+    } else if (currentPageNumber == pagesCount) {
+      numberArr = numberArr.filter((val) => val <= pagesCount);
+    }
+    // Remove Duplicates and Zeros
+    numberArr = numberArr.sort((a, b) => {
+      if (Number(a) > Number(b)) {
+        return 1;
+      } else if (Number(a) < Number(b)) {
+        return 0;
+      } else {
+        return -1;
+      }
+    });
+    numberArr = numberArr.filter((val, idx) => {
+      return val != 0 && numberArr.indexOf(val) == idx && val < pagesCount;
+    });
+    // Pre Append the elipses if necessary
+    if (numberArr.indexOf(1) == -1) {
+      jsxArray.push(<div key={0}>...</div>);
+    }
+    // Now Push to the Array
+    numberArr.forEach((val, idx) => {
+      jsxArray.push(
+        <div
+          key={idx + 1}
+          className={`${
+            currentPageNumber == val ? "border-2 rounded-md px-2" : ""
+          } cursor-pointer`}
+          onClick={() => setSpecificPage(val)}
+        >
+          {val}
+        </div>
+      );
+    });
 
+    // Add Ellipses at end if necessary
+    if (numberArr.indexOf(pagesCount) == -1) {
+      jsxArray.push(<div key={pagesCount + 1}>...</div>);
+    }
+
+    setPagesCountShown(jsxArray);
+    console.log(numberArr);
+  }, [pagesCount, currentPageNumber]);
+
+  // If a Specific Breed Is Selected From the filter, then disable the alpha sort
   useEffect(() => {
     console.log(`Selected breeds changed to ${selectedBreeds}`);
     if (selectedBreeds.length == 0) {
@@ -61,9 +124,6 @@ const AdoptionPage = () => {
   }, [selectedBreeds]);
 
   const router = useRouter();
-  useEffect(() => {
-    console.log("Filter was update");
-  }, [filterBy]);
 
   // On page load, check if the user is logged in
   useEffect(() => {
@@ -129,9 +189,11 @@ const AdoptionPage = () => {
 
           {isConnected && (
             <DogAdoptions
+              pagNumberCount={[pagesCount, setPagesCount]}
+              specificPageNumber={[goToSpecificPage, setSpecificPage]}
               showNextPage={[getNextPage, setGetNextPage]}
               showPreviousPage={[getPreviousPage, setGetPreviousPage]}
-              setPageNumber={[pageNumber, setPageNumber]}
+              setPageNumber={[currentPageNumber, setcurrentPageNumber]}
               filterOptions={[filterBy, setFilterBy]}
               selectedBreedContoller={[selectedBreeds, setSelectBreeds]}
               arrayOfSelectedDogIds={[selectedDogs, setSelectedDogs]}
@@ -141,11 +203,11 @@ const AdoptionPage = () => {
       </div>
       <div
         section-label={"button-area"}
-        className="flex flex-row items-center mx-2 p-2"
+        className="flex flex-row items-center mx-2 p-2 w-full "
       >
         {isConnected && (
-          <div className=" w-full flex flex-row items-center justify-center gap-5">
-            {pageNumber > 1 && (
+          <div className="w-full flex flex-row items-center justify-center gap-5">
+            {currentPageNumber > 1 && (
               <button
                 className="p-2 px-3 bg-[#2f922e] rounded-md"
                 onClick={() => {
@@ -155,14 +217,20 @@ const AdoptionPage = () => {
                 Previous
               </button>
             )}
-            <button
-              className="p-2 px-7 bg-[#2f922e] rounded-md"
-              onClick={() => {
-                setGetNextPage(true);
-              }}
-            >
-              Next
-            </button>
+            {/* Show Pages Numebrs Here */}
+            <div className="flex flex-row  gap-2 p-2  overflow-hidden ">
+              {pagesCountShown && pagesCountShown}
+            </div>
+            {showNextButton && (
+              <button
+                className="p-2 px-7 bg-[#2f922e] rounded-md"
+                onClick={() => {
+                  setGetNextPage(true);
+                }}
+              >
+                Next
+              </button>
+            )}
           </div>
         )}
       </div>
