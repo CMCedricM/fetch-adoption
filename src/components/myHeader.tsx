@@ -55,6 +55,7 @@ const MyHeader = () => {
                   console.log((err as Error).message);
                 }
               }}
+              data-test="logout_yes_button"
             >
               Yes
             </button>
@@ -72,12 +73,14 @@ const MyHeader = () => {
         <button
           className="text-lg text-black font-Rubik font-semibold px-8 py-2 rounded-md bg-[#2f922e]/70 hover:bg-[#2f922e]/90"
           onClick={() => setOpenLogin(true)}
+          data-test="login_button"
         >
           Login
         </button>
       )}
       {user && (
         <div
+          data-test="user_hello"
           className="text-lg text-black font-Rubik 
           font-semibold px-8 py-2 rounded-md 
            bg-[#2f922e]/70 hover:bg-[#2f922e]/90

@@ -26,6 +26,7 @@ export default function Home() {
             href="/adopt"
             className=" w-[80%] md:w-[30%] backdrop-blur-md   bg-[#40e024]/60 pt-4 pb-3 px-2
               rounded-xl text-[#000000] text-lg font-bold font-Rubik  hover:bg-[#40e024]/80 drop-shadow-lg ml-[3vw] md:ml-0 "
+            data-test="lets_play_button"
           >
             <button>{`Let's Play Fetch!`} </button>
           </Link>

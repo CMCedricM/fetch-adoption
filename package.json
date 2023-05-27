@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint", 
+    "cypress:open" : "cypress open",
+    "cypres:run" : "cypress run"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",
@@ -27,5 +29,8 @@
     "react-hook-form": "^7.43.9",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "cypress": "^12.13.0"
   }
 }
