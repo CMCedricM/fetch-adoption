@@ -213,6 +213,7 @@ const AdoptionPage = () => {
             {currentPageNumber > 1 && (
               <button
                 className="p-2 px-3 bg-[#2f922e] rounded-md"
+                data-test="previous_page"
                 onClick={() => {
                   setGetPreviousPage(true);
                 }}
@@ -230,6 +231,7 @@ const AdoptionPage = () => {
                 onClick={() => {
                   setGetNextPage(true);
                 }}
+                data-test="next_page"
               >
                 Next
               </button>

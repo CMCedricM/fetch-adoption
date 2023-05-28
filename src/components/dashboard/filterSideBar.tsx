@@ -81,7 +81,7 @@ const FilterSideBar = ({
   }, [alphaSelected]);
 
   return (
-    <div className={className ? className : ""}>
+    <div className={className ? className : ""} data-test="filter_bar">
       <div className="flex flex-col w-full items-center gap-2 tracking-wide">
         <h1 className="p-2 border-b border-b-black w-full text-center font-bold text-xl overflow-x-hidden">
           Filter

@@ -201,6 +201,7 @@ export const DogAdoptions = ({
       return (
         <div
           key={val.id}
+          data-test={val.id}
           className="grid-row-2 w-full rounded-md backgrop-blur-md bg-black/40 relative "
         >
           <DogImage

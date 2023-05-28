@@ -41,7 +41,10 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
   }, [getTheMatch]);
 
   return (
-    <div className="flex flex-col items-center gap-2 font-Rubik">
+    <div
+      className="flex flex-col items-center gap-2 font-Rubik"
+      data-test="match_button"
+    >
       <FetchModal
         openState={[showMatchModal, setShowMatchModal]}
         colorScheme="bg-[#E0E1BC]"
