@@ -220,7 +220,7 @@ export const DogAdoptions = ({
   };
 
   return (
-    <div className="grid sm:grid-cols-1 md:grid-cols-5 gap-2 w-full h-full p-2 mx-2">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 w-full h-full p-2 mx-2">
       {imageThumbnails}
     </div>
   );

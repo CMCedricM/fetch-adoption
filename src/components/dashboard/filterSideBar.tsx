@@ -119,7 +119,7 @@ const FilterSideBar = ({
               title="Arrange by Breed"
               className="bg-[#B9C9A1] text-center w-full py-1 font-semibold invisible lg:visible rounded-md cursor-default"
             >
-              <div className=" hidden md:flex items-center justify-center">
+              <div className=" hidden lg:flex items-center justify-center">
                 Arrange Breeds:
               </div>
             </span>
