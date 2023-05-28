@@ -1,3 +1,5 @@
+
+
 describe("Run the basic tests", () => {
   beforeEach(() => {
     cy.visit("/");

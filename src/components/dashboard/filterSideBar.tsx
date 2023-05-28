@@ -111,7 +111,7 @@ const FilterSideBar = ({
             <FetchComboBox
               selectedItem={[breedSelected, setBreedSelected]}
               itemsList={breedInfo}
-              className="text-center px-2"
+              className="text-center px-2 w-full"
             />
           </div>
           <div className="flex flex-col items-center w-full">
@@ -119,9 +119,11 @@ const FilterSideBar = ({
               title="Arrange by Breed"
               className="bg-[#B9C9A1] text-center w-full py-1 font-semibold invisible lg:visible rounded-md cursor-default"
             >
-              <div className="">Arrange Breeds:</div>
+              <div className=" hidden md:flex items-center justify-center">
+                Arrange Breeds:
+              </div>
             </span>
-            <ul className="flex flex-col  items-center w-full pt-2">
+            <ul className="flex flex-col md:pt-2 items-center w-full">
               {filterAlphaOptions.map((val, idx) => {
                 return (
                   <li

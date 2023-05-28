@@ -200,7 +200,7 @@ export const DogAdoptions = ({
     const ImageThumbArr = dogObj.map((val, idx) => {
       return (
         <div
-          key={idx}
+          key={val.id}
           className="grid-row-2 w-full rounded-md backgrop-blur-md bg-black/40 relative "
         >
           <DogImage

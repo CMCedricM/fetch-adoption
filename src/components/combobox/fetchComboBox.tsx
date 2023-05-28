@@ -31,9 +31,9 @@ const FetchComboBox = ({
             />
           </Combobox.Button>
         </div>
-        <div className="bg-niceWhite ">
+        <div className="bg-niceWhite w-full">
           <Combobox.Options
-            className={`absolute mt-1 h-[20vh] w-[7vw] overflow-auto bg-niceWhite p-2 rounded-md cursor-default`}
+            className={`absolute mt-1 h-[20vh] w-full overflow-auto bg-niceWhite p-2 rounded-md cursor-default`}
             style={{ scrollbarWidth: "none" }}
           >
             <Combobox.Option
