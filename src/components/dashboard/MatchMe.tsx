@@ -66,7 +66,7 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
           </button>
         </div>
       </FetchModal>
-      <div className="grid grid-rows-2 items-center gap-2">
+      <div className="flex flex-row md:grid md:grid-rows-2 items-center gap-2 p-4">
         <button
           title={`${!allowMatch ? "Select Some Dogs To Find Your Match" : ""}`}
           className={` rounded-md ${
