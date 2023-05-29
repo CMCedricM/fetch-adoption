@@ -87,21 +87,6 @@ const FilterSideBar = ({
           Filter
         </h1>
 
-        <div className="flex flex-col items-center font-Rubik w-full py-2">
-          <div className="w-full bg-[#B9C9A1] text-center py-1 font-semibold rounded-md">
-            Zip Code
-          </div>
-          <form className="flex flex-col items-center mt-3 gap-2">
-            <input
-              type="text"
-              className="w-[90%] rounded-md text-left py-1 px-2 font-Rubik"
-              placeholder="12345"
-            ></input>
-            <button className="text-center bg-niceWhite rounded-md px-2">
-              Search
-            </button>
-          </form>
-        </div>
         <div className="flex flex-col w-full py-2 gap-2">
           <div className="bg-[#B9C9A1] text-center font-semibold font-Rubik py-1 rounded-md">
             Breed
