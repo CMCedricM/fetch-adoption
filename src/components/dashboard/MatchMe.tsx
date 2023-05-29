@@ -84,13 +84,13 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
         </div>
       </FetchModal>
       <div className="flex flex-row md:grid md:grid-rows-2 items-center gap-2 p-4">
+        <button
+          onClick={() => setShowQuestion(true)}
+          className="bg-button_green cursor-pointer px-3 py-2 rounded-full"
+        >
+          ?
+        </button>
         <div className="flex flex-row gap-2">
-          <button
-            onClick={() => setShowQuestion(true)}
-            className="bg-button_green cursor-pointer px-3 rounded-full"
-          >
-            ?
-          </button>
           <button
             title={`${
               !allowMatch ? "Select Some Dogs To Find Your Match" : ""
