@@ -81,27 +81,12 @@ const FilterSideBar = ({
   }, [alphaSelected]);
 
   return (
-    <div className={className ? className : ""}>
+    <div className={className ? className : ""} data-test="filter_bar">
       <div className="flex flex-col w-full items-center gap-2 tracking-wide">
         <h1 className="p-2 border-b border-b-black w-full text-center font-bold text-xl overflow-x-hidden">
           Filter
         </h1>
 
-        <div className="flex flex-col items-center font-Rubik w-full py-2">
-          <div className="w-full bg-[#B9C9A1] text-center py-1 font-semibold rounded-md">
-            Zip Code
-          </div>
-          <form className="flex flex-col items-center mt-3 gap-2">
-            <input
-              type="text"
-              className="w-[90%] rounded-md text-left py-1 px-2 font-Rubik"
-              placeholder="12345"
-            ></input>
-            <button className="text-center bg-niceWhite rounded-md px-2">
-              Search
-            </button>
-          </form>
-        </div>
         <div className="flex flex-col w-full py-2 gap-2">
           <div className="bg-[#B9C9A1] text-center font-semibold font-Rubik py-1 rounded-md">
             Breed
@@ -111,7 +96,7 @@ const FilterSideBar = ({
             <FetchComboBox
               selectedItem={[breedSelected, setBreedSelected]}
               itemsList={breedInfo}
-              className="text-center px-2"
+              className="text-center px-2 w-full"
             />
           </div>
           <div className="flex flex-col items-center w-full">
@@ -119,9 +104,11 @@ const FilterSideBar = ({
               title="Arrange by Breed"
               className="bg-[#B9C9A1] text-center w-full py-1 font-semibold invisible lg:visible rounded-md cursor-default"
             >
-              <div className="">Arrange Breeds:</div>
+              <div className=" hidden lg:flex items-center justify-center">
+                Arrange Breeds:
+              </div>
             </span>
-            <ul className="flex flex-col  items-center w-full pt-2">
+            <ul className="flex flex-col md:pt-2 items-center w-full">
               {filterAlphaOptions.map((val, idx) => {
                 return (
                   <li

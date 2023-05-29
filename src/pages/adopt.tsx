@@ -169,9 +169,12 @@ const AdoptionPage = () => {
         reload={[reload, setReload]}
       ></LoginModal>
       <div className="flex flex-col w-full">
-        <div section-label={"adoption-area"} className="flex flex-row">
+        <div
+          section-label={"adoption-area"}
+          className="flex flex-col md:flex-row"
+        >
           {isConnected && (
-            <div className="md:flex flex-col gap-3 p-2 hidden">
+            <div className="md:flex flex-col gap-3 p-2">
               <div className="flex flex-col items-center gap-4 sticky top-[11vh] ">
                 <FilterSideBar
                   filterSetting={[filterBy, setFilterBy]}
@@ -210,6 +213,7 @@ const AdoptionPage = () => {
             {currentPageNumber > 1 && (
               <button
                 className="p-2 px-3 bg-[#2f922e] rounded-md"
+                data-test="previous_page"
                 onClick={() => {
                   setGetPreviousPage(true);
                 }}
@@ -227,6 +231,7 @@ const AdoptionPage = () => {
                 onClick={() => {
                   setGetNextPage(true);
                 }}
+                data-test="next_page"
               >
                 Next
               </button>

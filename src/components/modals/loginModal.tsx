@@ -71,6 +71,9 @@ const LoginModal = ({
       preventClosing={preventClosing}
     >
       <div className="flex flex-col gap-2 font-Rubik w-full items-center pb-2">
+        <p className="text-center text-red backdrop-blur-md bg-niceWhite/60 rounded-md px-2 ">
+          Note: You Must Allow Third-Party Cookies to Login
+        </p>
         <h1 className="font-bold text-3xl text-center">{`${
           title ? title : "Login"
         }`}</h1>

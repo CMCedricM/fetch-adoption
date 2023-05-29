@@ -1,6 +1,6 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { Combobox } from "@headlessui/react";
-import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
 type FetchBoxProps = {
   selectedItem: [string[], Dispatch<SetStateAction<string[]>>];
@@ -25,15 +25,15 @@ const FetchComboBox = ({
             onChange={(event) => setQuery(event.target.value)}
           />
           <Combobox.Button className=" bg-niceWhite absolute inset-y-0 right-0 flex items-center pr-2">
-            <ChevronUpDownIcon
+            <ChevronDownIcon
               className="h-5 w-5 text-gray-400"
               aria-hidden="true"
             />
           </Combobox.Button>
         </div>
-        <div className="bg-niceWhite ">
+        <div className="bg-niceWhite w-full">
           <Combobox.Options
-            className={`absolute mt-1 h-[20vh] w-[7vw] overflow-auto bg-niceWhite p-2 rounded-md cursor-default`}
+            className={`absolute mt-1 h-[20vh] w-full overflow-auto bg-niceWhite p-2 rounded-md cursor-default`}
             style={{ scrollbarWidth: "none" }}
           >
             <Combobox.Option

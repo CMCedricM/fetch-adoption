@@ -200,7 +200,8 @@ export const DogAdoptions = ({
     const ImageThumbArr = dogObj.map((val, idx) => {
       return (
         <div
-          key={idx}
+          key={val.id}
+          data-test={val.id}
           className="grid-row-2 w-full rounded-md backgrop-blur-md bg-black/40 relative "
         >
           <DogImage
@@ -220,7 +221,7 @@ export const DogAdoptions = ({
   };
 
   return (
-    <div className="grid sm:grid-cols-1 md:grid-cols-5 gap-2 w-full h-full p-2 mx-2">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 w-full h-full p-2 mx-2">
       {imageThumbnails}
     </div>
   );

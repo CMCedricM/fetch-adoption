@@ -1,34 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## About
 
-## Getting Started
+This is a Next.js project bootstrapped withe create-next-app
 
-First, run the development server:
+This project is my implentation of the Fetch Front End Take-Home Exercise. This project uses custom made components, modals, along with hooks and is implemented using typescript. This site also features a mobile view (must enable third party cookies for mobile devices)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+This site can be viewed and tested at this link: https://fetch-adoption-cedric.netlify.app/
+
+Please Note that logging through on the web and certain browsers locally requires that you allow Third Party Cookiese. Instructions:
+
+```
+Firefox Desktop
+Most Recent version as of May 29 2023
+1. Open https://fetch-adoption-cedric.netlify.app/
+2. Click on the shield icon in the address bar, should be before the lock icon
+3. Toggle off Enhanced Tracking Protection
+
+Chrome Desktop
+Most Recent version as of May 29 2023
+1. Open https://fetch-adoption-cedric.netlify.app/
+2. Select the lock icon > cookies & data > Toggle off Block
+Third Party Cookies
+
+Safari Desktop
+1. Safari > Settings > Privacy > uncheck Prevent Cross-Site Tracking
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## To Run Locally
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+//First run to install
+npm i
+// To run
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## To Test
 
-## Learn More
+```
+// To run tests using Cypress Testing use the following command
 
-To learn more about Next.js, take a look at the following resources:
+// With Cypress UI
+npm run cypress:open
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+// CLI only
+npm run e2e:test
+```

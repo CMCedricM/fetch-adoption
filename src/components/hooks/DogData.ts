@@ -34,6 +34,11 @@ interface DogSearchRetTypes {
   prev: string;
 }
 
+interface DogSearchWDecodedZip extends DogSearchRetTypes {
+  city: string;
+  state: string;
+}
+
 interface DogSearchTypes {
   nextPg?: string;
   prevPg?: string;
@@ -55,25 +60,7 @@ export const useDogData = ({ auth }: DogDataInfo) => {
     return data as string[];
   };
 
-  const getDogIds = async (filter?: string, searchSettings?: DogSearch) => {
-    const res = await auth
-      .get("/dogs/search", {
-        params: {
-          size: 15,
-          sort: !filter ? "breed:asc" : filter,
-        },
-      })
-      .catch((err) => {
-        throw new Error(`Unable to Fetch Dogs ==> ${(err as Error).message} `);
-      });
-
-    const { data } = res;
-    console.log(data);
-    // Always set the current dog count for every dogs search query
-    setDogsTotal((data as DogSearchRetTypes).total);
-    return data as DogSearchRetTypes;
-  };
-
+  // This will actually return the array of dog objects, not just their ids
   const getDogData = async (dogIds: Array<string>) => {
     const res = await auth.post("/dogs", dogIds).catch((err) => {
       throw new Error(err.message);
@@ -107,6 +94,27 @@ export const useDogData = ({ auth }: DogDataInfo) => {
     const { data } = res;
     // console.log("Data For Next Page");
     console.log(data);
+    return data as DogSearchRetTypes;
+  };
+  // This will just return a ptr to the previous and next page, along with dog IDS
+  // must send DogIds through /dogs endpoint to get objects
+  const getDogIds = async (filter?: string, searchSettings?: DogSearch) => {
+    const res = await auth
+      .get("/dogs/search", {
+        params: {
+          size: 15,
+          sort: !filter ? "breed:asc" : filter,
+        },
+      })
+      .catch((err) => {
+        throw new Error(`Unable to Fetch Dogs ==> ${(err as Error).message} `);
+      });
+
+    const { data } = res;
+    console.log(data);
+    // Always set the current dog count for every dogs search query
+    setDogsTotal((data as DogSearchRetTypes).total);
+
     return data as DogSearchRetTypes;
   };
 

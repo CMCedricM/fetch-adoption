@@ -41,7 +41,10 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
   }, [getTheMatch]);
 
   return (
-    <div className="flex flex-col items-center gap-2 font-Rubik">
+    <div
+      className="flex flex-col items-center gap-2 font-Rubik"
+      data-test="match_button"
+    >
       <FetchModal
         openState={[showMatchModal, setShowMatchModal]}
         colorScheme="bg-[#E0E1BC]"
@@ -66,7 +69,7 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
           </button>
         </div>
       </FetchModal>
-      <div className="grid grid-rows-2 items-center gap-2">
+      <div className="flex flex-row md:grid md:grid-rows-2 items-center gap-2 p-4">
         <button
           title={`${!allowMatch ? "Select Some Dogs To Find Your Match" : ""}`}
           className={` rounded-md ${

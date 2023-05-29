@@ -16,4 +16,11 @@ describe("Run the basic tests", () => {
     cy.logout();
     cy.getByData("user_hello").should("not.exist");
   });
+  it("Requires Login on Main page if not already logged in", () => {
+    cy.visit("/adopt");
+    cy.getByData("username_input").should("exist").type("test-user");
+    cy.getByData("email_input").should("exist").type("test@email.com");
+    cy.getByData("login_submit").should("exist").click();
+    cy.getByData("user_hello").should("exist").contains("Hello");
+  });
 });
