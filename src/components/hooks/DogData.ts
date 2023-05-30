@@ -19,7 +19,7 @@ export interface Dog {
 
 interface DogSearch {
   breeds?: string[];
-  zipCodes?: Array<string>;
+  zipCodes?: number[];
   ageMin?: Number;
   ageMax?: Number;
   size: Number;
@@ -111,7 +111,7 @@ export const useDogData = ({ auth }: DogDataInfo) => {
       });
 
     const { data } = res;
-    console.log(data);
+
     // Always set the current dog count for every dogs search query
     setDogsTotal((data as DogSearchRetTypes).total);
 

@@ -19,7 +19,7 @@ const FetchComboBox = ({
   const [query, setQuery] = useState<string>("");
 
   return (
-    <div>
+    <div className={className}>
       <Combobox
         value={selectItem}
         onChange={setSelectedItem}

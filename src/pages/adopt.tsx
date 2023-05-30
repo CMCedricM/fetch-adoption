@@ -13,8 +13,6 @@ import { CurrencyEuroIcon } from "@heroicons/react/24/outline";
 export enum FilterOptionTypes {
   breedAZ = "breed:asc",
   breedZA = "breed:desc",
-  ageAsc = "age:asc",
-  ageDsc = "age:desc",
   none = "",
 }
 
@@ -36,7 +34,6 @@ const AdoptionPage = () => {
   const [pagesCount, setPagesCount] = useState<number>(1);
   const [pagesCountShown, setPagesCountShown] = useState<JSX.Element[]>([]);
   const [goToSpecificPage, setSpecificPage] = useState<number>(0);
-
   const [showNextButton, setShowNextButton] = useState<boolean>(true);
 
   // Filtering
@@ -45,6 +42,8 @@ const AdoptionPage = () => {
   );
   const [selectedBreeds, setSelectBreeds] = useState<string[]>([]);
   const [displayAlphaOrder, setDisplayAlphaOrder] = useState<boolean>(false);
+  const [addressSearch, setAddressSearch] = useState<number>(0);
+  const [allowBreedSelection, setAllowBreedSelection] = useState<boolean>(true);
 
   // Dogs to find a match from
   const [selectedDogs, setSelectedDogs] = useState<string[]>([]);
@@ -164,6 +163,12 @@ const AdoptionPage = () => {
     }
   }, [isConnected]);
 
+  // Enable or disable breed selection depending if we have an address or not
+  useEffect(() => {
+    addressSearch.toString().length >= 4
+      ? setAllowBreedSelection(false)
+      : setAllowBreedSelection(true);
+  }, [addressSearch]);
   return (
     <div className="flex flex-col w-full h-full p-5 font-Rubik">
       <LoginModal
@@ -186,6 +191,11 @@ const AdoptionPage = () => {
                   breedsData={[breedData, setBreedData]}
                   breedSelection={[selectedBreeds, setSelectBreeds]}
                   controlAlphaOrder={[displayAlphaOrder, setDisplayAlphaOrder]}
+                  zipCodeController={[addressSearch, setAddressSearch]}
+                  allowBreedSelection={[
+                    allowBreedSelection,
+                    setAllowBreedSelection,
+                  ]}
                 />
                 <MatchMe
                   selectedDogs={[selectedDogs, setSelectedDogs]}
@@ -204,6 +214,7 @@ const AdoptionPage = () => {
               filterOptions={[filterBy, setFilterBy]}
               selectedBreedContoller={[selectedBreeds, setSelectBreeds]}
               arrayOfSelectedDogIds={[selectedDogs, setSelectedDogs]}
+              zipCodeLocation={[addressSearch, setAddressSearch]}
             ></DogAdoptions>
           )}
         </div>

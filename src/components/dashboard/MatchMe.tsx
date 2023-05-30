@@ -51,11 +51,11 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
         colorScheme="bg-[#E0E1BC]"
         dialogTitle={"How Does This Work?"}
       >
-        <div className=" py-2 mt-4 w-full flex flex-col items-center justify-center font-Rubik border-2 rounded-md">
-          <ul className="flex flex-col list-decimal font-semibold w-[10vw] items-start">
-            <li>Select the Star Button</li>
-            <li>{`Select the 'Match Me' Button`}</li>
-            <li>{`Now you can see your match!`}</li>
+        <div className="py-2 mt-4 w-full flex flex-col font-Rubik border-2 rounded-md">
+          <ul className=" font-semibold w-full px-3">
+            <li>{`1. Select the Star Button`}</li>
+            <li>{`2. Select the 'Match Me' Button`}</li>
+            <li>{`3. Now you can see your match!`}</li>
           </ul>
         </div>
       </FetchModal>

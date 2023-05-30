@@ -20,6 +20,7 @@ type DogAdoptionProps = {
   ];
   selectedBreedContoller: [string[], Dispatch<SetStateAction<string[]>>];
   arrayOfSelectedDogIds: [string[], Dispatch<SetStateAction<string[]>>];
+  zipCodeLocation: [number, Dispatch<SetStateAction<number>>];
 };
 
 export const DogAdoptions = ({
@@ -31,6 +32,7 @@ export const DogAdoptions = ({
   selectedBreedContoller,
   arrayOfSelectedDogIds,
   specificPageNumber,
+  zipCodeLocation,
 }: DogAdoptionProps) => {
   const { getDogIds, getDogData, getNextPagOfDogsIDs, findDogs, dogsTotal } =
     useDogData({
@@ -57,6 +59,7 @@ export const DogAdoptions = ({
   // Filter Controller
   const [filterBy, setFilterBy] = filterOptions;
   const [selectedBreed, setSelectedBreed] = selectedBreedContoller;
+  const [zipCode, setZipCode] = zipCodeLocation;
 
   // UseEffect to listen to page changes
   // This gets a certain page of the dog
@@ -64,7 +67,8 @@ export const DogAdoptions = ({
     setCursor(page.toString());
 
     findDogs({
-      breeds: selectedBreed,
+      breeds: !zipCode ? selectedBreed : [],
+      zipCodes: zipCode ? [zipCode] : undefined,
       size: 15,
       sort: filterBy,
       from: (specificPage * dogsPerPage - dogsPerPage).toString(),
@@ -102,22 +106,33 @@ export const DogAdoptions = ({
 
   // If we  are given a selected breed, filter the results by the current filter, and get the dogs
   useEffect(() => {
-    selectedBreed
-      ? findDogs({ breeds: selectedBreed, size: 15, sort: filterBy }).then(
-          (data) => {
-            setPage(1);
-            setPreviousPagePointer("");
-            setNextPagePointer(data.next);
-            setDogIds(data.resultIds);
-          }
-        )
-      : getDogIds(filterBy).then((data) => {
+    if (selectedBreed && zipCode <= 0) {
+      findDogs({ breeds: selectedBreed, size: 15, sort: filterBy }).then(
+        (data) => {
           setPage(1);
           setPreviousPagePointer("");
           setNextPagePointer(data.next);
           setDogIds(data.resultIds);
-        });
-  }, [selectedBreed, filterBy]);
+        }
+      );
+    } else if (zipCode) {
+      findDogs({ size: 15, sort: filterBy, zipCodes: [zipCode] }).then(
+        (data) => {
+          setPage(1);
+          setPreviousPagePointer("");
+          setNextPagePointer(data.next);
+          setDogIds(data.resultIds);
+        }
+      );
+    } else {
+      getDogIds(filterBy).then((data) => {
+        setPage(1);
+        setPreviousPagePointer("");
+        setNextPagePointer(data.next);
+        setDogIds(data.resultIds);
+      });
+    }
+  }, [selectedBreed, filterBy, zipCode]);
 
   // This is where we will call to get another page of dogs
   useEffect(() => {
