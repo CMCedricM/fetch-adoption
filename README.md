@@ -2,7 +2,7 @@
 
 This is a Next.js project bootstrapped withe create-next-app
 
-This project is my implentation of the Fetch Front End Take-Home Exercise. This project uses custom made components, modals, along with hooks and is implemented using typescript. This site also features a mobile view (must enable third party cookies for mobile devices)
+This project is my implentation of the Fetch Front End Take-Home Exercise. This project uses custom made components, modals, along with hooks and is implemented using typescript. A mobile view is also implemented (must enable third party cookies for mobile devices),
 
 This site can be viewed and tested at this link: https://fetch-adoption-cedric.netlify.app/
 
