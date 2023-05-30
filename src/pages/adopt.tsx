@@ -63,12 +63,14 @@ const AdoptionPage = () => {
         lastNumber ? Number(lastNumber + 1) : 0,
       ];
     }
-    if (currentPageNumber != pagesCount) {
+
+    if (currentPageNumber != Math.ceil(pagesCount)) {
       const lastNumber = numberArr.at(numberArr.length - 1);
       numberArr = [...numberArr, lastNumber ? lastNumber + 1 : 0];
-    } else if (currentPageNumber == pagesCount) {
+    } else if (currentPageNumber == Math.ceil(pagesCount)) {
       numberArr = numberArr.filter((val) => val <= pagesCount);
     }
+
     // Remove Duplicates and Zeros
     numberArr = numberArr.sort((a, b) => {
       if (Number(a) > Number(b)) {
@@ -80,7 +82,11 @@ const AdoptionPage = () => {
       }
     });
     numberArr = numberArr.filter((val, idx) => {
-      return val != 0 && numberArr.indexOf(val) == idx && val < pagesCount;
+      return (
+        val != 0 &&
+        numberArr.indexOf(val) == idx &&
+        val <= Math.ceil(pagesCount)
+      );
     });
     // Pre Append the elipses if necessary
     if (numberArr.indexOf(1) == -1) {
@@ -102,17 +108,15 @@ const AdoptionPage = () => {
     });
 
     // Add Ellipses at end if necessary
-    if (numberArr.indexOf(pagesCount) == -1) {
+    if (numberArr.indexOf(Math.ceil(pagesCount)) == -1) {
       jsxArray.push(<div key={pagesCount + 1}>...</div>);
     }
 
     setPagesCountShown(jsxArray);
-    console.log(numberArr);
   }, [pagesCount, currentPageNumber]);
 
   // If a Specific Breed Is Selected From the filter, then disable the alpha sort
   useEffect(() => {
-    console.log(`Selected breeds changed to ${selectedBreeds}`);
     if (selectedBreeds.length == 0) {
       setDisplayAlphaOrder(true);
 
@@ -225,7 +229,7 @@ const AdoptionPage = () => {
             <div className="flex flex-row  gap-2 p-2  overflow-hidden ">
               {pagesCountShown && pagesCountShown}
             </div>
-            {showNextButton && (
+            {showNextButton && currentPageNumber != pagesCount && (
               <button
                 className="p-2 px-7 bg-[#2f922e] rounded-md"
                 onClick={() => {
