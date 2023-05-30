@@ -13,8 +13,6 @@ import { CurrencyEuroIcon } from "@heroicons/react/24/outline";
 export enum FilterOptionTypes {
   breedAZ = "breed:asc",
   breedZA = "breed:desc",
-  ageAsc = "age:asc",
-  ageDsc = "age:desc",
   none = "",
 }
 
@@ -36,7 +34,6 @@ const AdoptionPage = () => {
   const [pagesCount, setPagesCount] = useState<number>(1);
   const [pagesCountShown, setPagesCountShown] = useState<JSX.Element[]>([]);
   const [goToSpecificPage, setSpecificPage] = useState<number>(0);
-
   const [showNextButton, setShowNextButton] = useState<boolean>(true);
 
   // Filtering
@@ -45,6 +42,8 @@ const AdoptionPage = () => {
   );
   const [selectedBreeds, setSelectBreeds] = useState<string[]>([]);
   const [displayAlphaOrder, setDisplayAlphaOrder] = useState<boolean>(false);
+  const [addressSearch, setAddressSearch] = useState<number>(0);
+  const [allowBreedSelection, setAllowBreedSelection] = useState<boolean>(true);
 
   // Dogs to find a match from
   const [selectedDogs, setSelectedDogs] = useState<string[]>([]);
@@ -63,12 +62,14 @@ const AdoptionPage = () => {
         lastNumber ? Number(lastNumber + 1) : 0,
       ];
     }
-    if (currentPageNumber != pagesCount) {
+
+    if (currentPageNumber != Math.ceil(pagesCount)) {
       const lastNumber = numberArr.at(numberArr.length - 1);
       numberArr = [...numberArr, lastNumber ? lastNumber + 1 : 0];
-    } else if (currentPageNumber == pagesCount) {
+    } else if (currentPageNumber == Math.ceil(pagesCount)) {
       numberArr = numberArr.filter((val) => val <= pagesCount);
     }
+
     // Remove Duplicates and Zeros
     numberArr = numberArr.sort((a, b) => {
       if (Number(a) > Number(b)) {
@@ -80,7 +81,11 @@ const AdoptionPage = () => {
       }
     });
     numberArr = numberArr.filter((val, idx) => {
-      return val != 0 && numberArr.indexOf(val) == idx && val < pagesCount;
+      return (
+        val != 0 &&
+        numberArr.indexOf(val) == idx &&
+        val <= Math.ceil(pagesCount)
+      );
     });
     // Pre Append the elipses if necessary
     if (numberArr.indexOf(1) == -1) {
@@ -102,17 +107,15 @@ const AdoptionPage = () => {
     });
 
     // Add Ellipses at end if necessary
-    if (numberArr.indexOf(pagesCount) == -1) {
+    if (numberArr.indexOf(Math.ceil(pagesCount)) == -1) {
       jsxArray.push(<div key={pagesCount + 1}>...</div>);
     }
 
     setPagesCountShown(jsxArray);
-    console.log(numberArr);
   }, [pagesCount, currentPageNumber]);
 
   // If a Specific Breed Is Selected From the filter, then disable the alpha sort
   useEffect(() => {
-    console.log(`Selected breeds changed to ${selectedBreeds}`);
     if (selectedBreeds.length == 0) {
       setDisplayAlphaOrder(true);
 
@@ -160,6 +163,12 @@ const AdoptionPage = () => {
     }
   }, [isConnected]);
 
+  // Enable or disable breed selection depending if we have an address or not
+  useEffect(() => {
+    addressSearch.toString().length >= 4
+      ? setAllowBreedSelection(false)
+      : setAllowBreedSelection(true);
+  }, [addressSearch]);
   return (
     <div className="flex flex-col w-full h-full p-5 font-Rubik">
       <LoginModal
@@ -182,6 +191,11 @@ const AdoptionPage = () => {
                   breedsData={[breedData, setBreedData]}
                   breedSelection={[selectedBreeds, setSelectBreeds]}
                   controlAlphaOrder={[displayAlphaOrder, setDisplayAlphaOrder]}
+                  zipCodeController={[addressSearch, setAddressSearch]}
+                  allowBreedSelection={[
+                    allowBreedSelection,
+                    setAllowBreedSelection,
+                  ]}
                 />
                 <MatchMe
                   selectedDogs={[selectedDogs, setSelectedDogs]}
@@ -200,6 +214,7 @@ const AdoptionPage = () => {
               filterOptions={[filterBy, setFilterBy]}
               selectedBreedContoller={[selectedBreeds, setSelectBreeds]}
               arrayOfSelectedDogIds={[selectedDogs, setSelectedDogs]}
+              zipCodeLocation={[addressSearch, setAddressSearch]}
             ></DogAdoptions>
           )}
         </div>
@@ -225,7 +240,7 @@ const AdoptionPage = () => {
             <div className="flex flex-row  gap-2 p-2  overflow-hidden ">
               {pagesCountShown && pagesCountShown}
             </div>
-            {showNextButton && (
+            {showNextButton && currentPageNumber != pagesCount && (
               <button
                 className="p-2 px-7 bg-[#2f922e] rounded-md"
                 onClick={() => {

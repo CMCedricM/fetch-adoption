@@ -19,7 +19,9 @@ type filterSideProps = {
   width?: string;
   breedsData: [Array<string>, Dispatch<SetStateAction<Array<string>>>];
   breedSelection: [string[], Dispatch<SetStateAction<string[]>>];
+  allowBreedSelection: [boolean, Dispatch<SetStateAction<boolean>>];
   controlAlphaOrder: [boolean, Dispatch<SetStateAction<boolean>>];
+  zipCodeController: [number, Dispatch<SetStateAction<number>>];
 };
 
 const FilterSideBar = ({
@@ -30,6 +32,8 @@ const FilterSideBar = ({
   filterSetting,
   breedSelection,
   controlAlphaOrder,
+  zipCodeController,
+  allowBreedSelection,
 }: filterSideProps) => {
   const [alphaSelected, setAlphaSelected] = useState<string | boolean | null>(
     null
@@ -40,10 +44,29 @@ const FilterSideBar = ({
 
   const [breedInfo, setBreedInfo] = breedsData;
   const [breedSelected, setBreedSelected] = breedSelection;
+  const [zipCode, setZipCode] = zipCodeController;
 
   const [allowAlphaOrder, setAllowAlphaOrder] = controlAlphaOrder;
 
   const [disableAlpha, setDisableAlpha] = useState<boolean>(false);
+  const [disableSearch, setDisableSearch] = useState<boolean>(true);
+  const [enableBreedSelection, setEnableBreedSelection] = allowBreedSelection;
+  console.log(`Allowed Selection ${enableBreedSelection}`);
+
+  // Form Handler
+  const {
+    register,
+    handleSubmit,
+    reset,
+    clearErrors,
+    formState: { errors, isValid },
+  } = useForm<ZipEntry>();
+
+  const onSubmit: SubmitHandler<ZipEntry> = async (data) => {
+    const zip = data.zipCode;
+    setZipCode(data.zipCode);
+    console.log(`zip ${data.zipCode}`);
+  };
 
   useEffect(() => {
     setAlphaSelected("a_z");
@@ -53,7 +76,6 @@ const FilterSideBar = ({
       setDisableAlpha(true);
     }
     allowAlphaOrder ? setDisableAlpha(false) : setDisableAlpha(true);
-    console.log("alpha order modified");
   }, [allowAlphaOrder]);
 
   const filterAlphaOptions: Record<
@@ -80,6 +102,9 @@ const FilterSideBar = ({
     }
   }, [alphaSelected]);
 
+  useEffect(() => {
+    isValid ? setDisableSearch(false) : setDisableSearch(true);
+  }, [isValid]);
   return (
     <div className={className ? className : ""} data-test="filter_bar">
       <div className="flex flex-col w-full items-center gap-2 tracking-wide">
@@ -87,6 +112,36 @@ const FilterSideBar = ({
           Filter
         </h1>
 
+        <form
+          className="w-full flex flex-col items-center justify-center gap-3"
+          onSubmit={handleSubmit(onSubmit, console.log)}
+        >
+          <p className="bg-[#B9C9A1] text-center font-semibold font-Rubik py-1 rounded-md w-full">
+            Zip Code
+          </p>
+          <input
+            type="text"
+            className="lg:w-full flex items-center px-2 rounded-md py-1 w-[50%]"
+            {...register("zipCode", {})}
+          ></input>
+          <button
+            className="bg-niceWhite rounded-md px-2 disabled:bg-gray"
+            disabled={disableSearch}
+          >
+            Search
+          </button>
+          {zipCode > 0 && (
+            <button
+              className="bg-niceWhite rounded-md px-2"
+              onClick={() => {
+                setZipCode(0);
+                reset();
+              }}
+            >
+              Clear
+            </button>
+          )}
+        </form>
         <div className="flex flex-col w-full py-2 gap-2">
           <div className="bg-[#B9C9A1] text-center font-semibold font-Rubik py-1 rounded-md">
             Breed
@@ -96,7 +151,8 @@ const FilterSideBar = ({
             <FetchComboBox
               selectedItem={[breedSelected, setBreedSelected]}
               itemsList={breedInfo}
-              className="text-center px-2 w-full"
+              className="w-full"
+              isDisabled={enableBreedSelection ? false : true}
             />
           </div>
           <div className="flex flex-col items-center w-full">

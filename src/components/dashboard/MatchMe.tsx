@@ -40,11 +40,25 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
     }
   }, [getTheMatch]);
 
+  const [showQuestion, setShowQuestion] = useState(false);
   return (
     <div
       className="flex flex-col items-center gap-2 font-Rubik"
       data-test="match_button"
     >
+      <FetchModal
+        openState={[showQuestion, setShowQuestion]}
+        colorScheme="bg-[#E0E1BC]"
+        dialogTitle={"How Does This Work?"}
+      >
+        <div className="py-2 mt-4 w-full flex flex-col font-Rubik border-2 rounded-md">
+          <ul className=" font-semibold w-full px-3">
+            <li>{`1. Select the Star Button`}</li>
+            <li>{`2. Select the 'Match Me' Button`}</li>
+            <li>{`3. Now you can see your match!`}</li>
+          </ul>
+        </div>
+      </FetchModal>
       <FetchModal
         openState={[showMatchModal, setShowMatchModal]}
         colorScheme="bg-[#E0E1BC]"
@@ -71,16 +85,26 @@ const MatchMe = ({ selectedDogs }: MatchMeProps) => {
       </FetchModal>
       <div className="flex flex-row md:grid md:grid-rows-2 items-center gap-2 p-4">
         <button
-          title={`${!allowMatch ? "Select Some Dogs To Find Your Match" : ""}`}
-          className={` rounded-md ${
-            allowMatch
-              ? "bg-button_green cursor-pointer"
-              : "bg-gray cursor-not-allowed "
-          } p-2 `}
-          onClick={() => (allowMatch ? setGetTheMatch(true) : "")}
+          onClick={() => setShowQuestion(true)}
+          className="bg-button_green cursor-pointer px-3 py-2 rounded-full"
         >
-          Match Me
+          ?
         </button>
+        <div className="flex flex-row gap-2">
+          <button
+            title={`${
+              !allowMatch ? "Select Some Dogs To Find Your Match" : ""
+            }`}
+            className={` rounded-md ${
+              allowMatch
+                ? "bg-button_green cursor-pointer"
+                : "bg-gray cursor-not-allowed "
+            } p-2 `}
+            onClick={() => (allowMatch ? setGetTheMatch(true) : "")}
+          >
+            Match Me
+          </button>
+        </div>
         <button
           className={` rounded-md ${
             allowMatch ? "bg-button_green cursor-pointer" : "hidden"

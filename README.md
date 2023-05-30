@@ -6,7 +6,7 @@ This project is my implentation of the Fetch Front End Take-Home Exercise. This 
 
 This site can be viewed and tested at this link: https://fetch-adoption-cedric.netlify.app/
 
-Please Note that logging through on the web and certain browsers locally requires that you allow Third Party Cookiese. Instructions:
+Please Note that logging through on the web and certain browsers locally requires that you allow Third Party Cookies. Instructions:
 
 ```
 Firefox Desktop
