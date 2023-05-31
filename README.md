@@ -36,6 +36,10 @@ npm run dev
 
 ## To Test
 
+To use cypress test open a new terminal and do `npm run dev` at the root of the project folder
+
+Then in another terminal run the following, also at the root of the project folder
+
 ```
 // To run tests using Cypress Testing use the following command
 
